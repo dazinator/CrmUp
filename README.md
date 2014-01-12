@@ -1,4 +1,4 @@
 CrmUp
 =====
 
-CrmUp is a .NET library that helps you to deploy changes to Microsoft Dynamics Crm. This project is heavily inspired by DbUp. It tracks which Crm Solution Files have been applied already, and applies only the changes that are needed to get your Microsoft Dyanmics CRM Organisation up to date.
+CrmUp is an extension for DbUp that enables you to deploy changes to Microsoft Dynamics Crm via Solution Files. The Solution files that have allready been applied are tracked, and therefore only the solution files necessary to roll Crm up to the latest version are applied.
