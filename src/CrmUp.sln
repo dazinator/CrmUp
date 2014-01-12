@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrmUp", "CrmUp\CrmUp.csproj", "{D3B1F43F-9870-4A5C-A987-6BCFFE26CD7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrmUp.Tests", "CrmUp.Tests\CrmUp.Tests.csproj", "{D2B34256-4AAF-4B61-8873-BBB4223E79A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D3B1F43F-9870-4A5C-A987-6BCFFE26CD7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3B1F43F-9870-4A5C-A987-6BCFFE26CD7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3B1F43F-9870-4A5C-A987-6BCFFE26CD7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3B1F43F-9870-4A5C-A987-6BCFFE26CD7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2B34256-4AAF-4B61-8873-BBB4223E79A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2B34256-4AAF-4B61-8873-BBB4223E79A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2B34256-4AAF-4B61-8873-BBB4223E79A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2B34256-4AAF-4B61-8873-BBB4223E79A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
