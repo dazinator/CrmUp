@@ -8,9 +8,11 @@ namespace CrmUp
 {
     public class CrmSolutionFile : SqlScript
     {
+       
         public CrmSolutionFile(string name, Byte[] fileBytes)
             : base(name, Convert.ToBase64String(fileBytes))
         {
+            FileBytes = fileBytes;
         }
 
         /// <summary>
@@ -71,5 +73,9 @@ namespace CrmUp
             }
             return outputBytes.ToArray();
         }
+
+        public Byte[] FileBytes { get; set; }
+
+       
     }
 }

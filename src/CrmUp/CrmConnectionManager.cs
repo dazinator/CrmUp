@@ -14,7 +14,7 @@ namespace CrmUp
         private IOrganizationService _UpgradeConnection;
         private string _ConnectionStringKey;
         private bool _IsConnectionStringKey;
-
+        private bool errorOccured = false;
         public CrmConnectionManager(string connectionStringOrKey, bool isConnectionStringKey = false)
         {
             _ConnectionStringKey = connectionStringOrKey;
@@ -42,6 +42,21 @@ namespace CrmUp
             return factory.CreateOrganizationServiceProxy();
         }
 
+        public virtual void ExecuteWithManagedConnection(Action<Func<IOrganizationService>> action)
+        {
+            if (errorOccured)
+                throw new InvalidOperationException("Error occured on previous script execution");
+            try
+            {
+                action(() => _UpgradeConnection);
+            }
+            catch (Exception)
+            {
+                errorOccured = true;
+                throw;
+            }
+        }
+        
         public void ExecuteCommandsWithManagedConnection(Action<Func<IDbCommand>> action)
         {
             throw new NotImplementedException();

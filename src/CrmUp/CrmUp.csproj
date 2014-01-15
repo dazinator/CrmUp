@@ -99,6 +99,9 @@
     <Compile Include="Class1.cs" />
     <Compile Include="CrmConnectionManager.cs" />
     <Compile Include="CrmSolutionFile.cs" />
+    <Compile Include="CrmSolutionJournal.cs" />
+    <Compile Include="CrmSolutionScriptExecutor.cs" />
+    <Compile Include="CrmUpExtensions.cs" />
     <Compile Include="EmbeddedCrmSolutionScriptProvider.cs" />
     <Compile Include="FailedToConnectToCrmException.cs" />
     <Compile Include="IOrganizationProxyFactory.cs" />
