@@ -62,8 +62,7 @@ namespace CrmUp.Tests
                 }
                 _fakeConnection.AssertWasCalled(o => o.Execute(Arg<OrganizationRequest>.Is.Anything), options => options.Repeat.Times(scriptCount));
             }
-
-
+            
             [Then]
             public void Makes_Execute_Request_To_Crm_For_A_Single_Solution()
             {

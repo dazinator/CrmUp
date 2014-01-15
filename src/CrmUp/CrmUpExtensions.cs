@@ -1,5 +1,4 @@
-﻿using CrmUp.Tests;
-using DbUp.Builder;
+﻿using DbUp.Builder;
 using DbUp.Engine.Transactions;
 using DbUp.Support.SqlServer;
 

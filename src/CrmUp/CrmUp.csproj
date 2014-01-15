@@ -104,6 +104,7 @@
     <Compile Include="CrmUpExtensions.cs" />
     <Compile Include="EmbeddedCrmSolutionScriptProvider.cs" />
     <Compile Include="FailedToConnectToCrmException.cs" />
+    <Compile Include="Guard.cs" />
     <Compile Include="IOrganizationProxyFactory.cs" />
     <Compile Include="OrganisationDoesNotExistException.cs" />
     <Compile Include="OrganizationProxyFactory.cs" />

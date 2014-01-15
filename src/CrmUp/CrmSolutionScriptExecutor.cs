@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq;
 using DbUp.Engine;
 using DbUp.Engine.Output;
@@ -10,7 +8,7 @@ using DbUp.Engine.Transactions;
 using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
 
-namespace CrmUp.Tests
+namespace CrmUp
 {
     public class CrmSolutionScriptExecutor : IScriptExecutor
     {
@@ -19,7 +17,7 @@ namespace CrmUp.Tests
         private Func<IUpgradeLog> _LogFactory = null;
         private Func<bool> _VariablesEnabled = null;
         private IEnumerable<IScriptPreprocessor> _ScriptPreProcessors = null;
-
+      
         public CrmSolutionScriptExecutor(Func<IConnectionManager> connectionManagerFactory, Func<IUpgradeLog> logFactory, Func<bool> variablesEnabled, IEnumerable<IScriptPreprocessor> scriptPreprocessors)
         {
             _ConnectionManagerFactory = connectionManagerFactory;
@@ -70,14 +68,14 @@ namespace CrmUp.Tests
                 {
                     index++;
 
-                    var solution = EnsureIs<CrmSolutionFile, SqlScript>(script, "Script");
+                    var solution = Guard.EnsureIs<CrmSolutionFile, SqlScript>(script, "Script");
                     var impSolReq = new ImportSolutionRequest()
                     {
                         CustomizationFile = solution.FileBytes
                     };
 
                     var conn = _ConnectionManagerFactory();
-                    var crmConnManager = EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
+                    var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
                     crmConnManager.ExecuteWithManagedConnection((a) =>
                     {
                         var response = a().Execute(impSolReq);
@@ -138,14 +136,6 @@ namespace CrmUp.Tests
         //    return crmSolution;
         //}
 
-        protected TOut EnsureIs<TOut, TIn>(TIn instance, string argName) where TOut : class
-        {
-            var to = instance as TOut;
-            if (to == null)
-            {
-                throw new ArgumentException(argName);
-            }
-            return to;
-        }
+    
     }
 }

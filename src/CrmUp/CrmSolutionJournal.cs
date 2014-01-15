@@ -6,80 +6,102 @@ using System.Threading.Tasks;
 using DbUp.Engine;
 using DbUp.Engine.Output;
 using DbUp.Engine.Transactions;
+using Microsoft.Xrm.Sdk.Query;
 
 namespace CrmUp
 {
+    /// <summary>
+    /// An implementation of the <see cref="IJournal"/> interface which tracks version numbers for a 
+    /// Dynamics Crm Organisation by querying the solutions entity in CRM.
+    /// </summary>
     public class CrmSolutionJournal : IJournal
     {
-       // private readonly string _SchemaTableName;
-        private readonly Func<IConnectionManager> _ConnectionManager;
-        private readonly Func<IUpgradeLog> _Log;
+       // private readonly string schemaTableName;
+        private readonly Func<IConnectionManager> _ConnectionManagerFactory;
+        private readonly Func<IUpgradeLog> _LogFactory;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CrmSolutionsJournal"/> class.
+        /// </summary>
+        /// <param name="connectionManager">The connection manager.</param>
+        /// <param name="logger">The log.</param>
         public CrmSolutionJournal(Func<IConnectionManager> connectionManager, Func<IUpgradeLog> logger)
         {
-            //this.schemaTableName = SqlObjectParser.QuoteSqlObjectName(table);
-            // this.schemaTableName = !string.IsNullOrEmpty(schema) ? SqlObjectParser.QuoteSqlObjectName(schema) + "." + SqlObjectParser.QuoteSqlObjectName(table) : SqlObjectParser.QuoteSqlObjectName(table);
-            this._ConnectionManager = connectionManager;
-            this._Log = logger;
+            this._ConnectionManagerFactory = connectionManager;
+            _LogFactory = logger;
         }
 
+        /// <summary>
+        /// Recalls the solutions that have been applied against the crm organisation.
+        /// </summary>
+        /// <returns>All executed scripts.</returns>
         public string[] GetExecutedScripts()
         {
-            this._Log().WriteInformation("Fetching list of already executed scripts.", new object[0]);
-            //if (!this.DoesTableExist())
-            //{
-            //    this.log().WriteInformation(string.Format("The {0} table could not be found. The database is assumed to be at version 0.", (object)this.schemaTableName), new object[0]);
-            //    return new string[0];
-            //}
-            // else
-            //{
+            _LogFactory().WriteInformation("Fetching list of already imported solutions.");
+
             var scripts = new List<string>();
-            throw new NotImplementedException();
-            //this.connectionManager().ExecuteCommandsWithManagedConnection((Action<Func<IDbCommand>>)(dbCommandFactory =>
-            //{
-            //    using (IDbCommand resource_1 = dbCommandFactory())
-            //    {
-            //        resource_1.CommandText = this.GetExecutedScriptsSql(this.schemaTableName);
-            //        resource_1.CommandType = CommandType.Text;
-            //        using (IDataReader resource_0 = resource_1.ExecuteReader())
-            //        {
-            //            while (resource_0.Read())
-            //                scripts.Add((string)resource_0[0]);
-            //        }
-            //    }
-            //}));
-            return scripts.ToArray();
-            //  }
+
+            try
+            {
+
+                //  var solution = Guard.EnsureIs<CrmSolutionFile, SqlScript>(script, "Script");
+
+                var conn = _ConnectionManagerFactory();
+                var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
+                crmConnManager.ExecuteWithManagedConnection((a) =>
+                {
+                    var atts =
+                        new ColumnSet(new string[] { "version", "uniquename", "ismanaged" });
+                    //new ColumnSet(new string[] { "publisherid", "installedon", "version", "versionnumber", "friendlyname" });
+                    var querySampleSolution = new QueryExpression
+                    {
+                        EntityName = "solution",
+                        ColumnSet = atts
+                    };
+
+                    //  querySampleSolution.Criteria.AddCondition("uniquename", ConditionOperator.Equal, solutionUniqueName);
+                    var results = a().RetrieveMultiple(querySampleSolution);
+                    foreach (var r in results.Entities)
+                    {
+                        
+                        var solName = r["uniquename"];
+                        var solVersion = r["version"];
+                        var isManaged = (bool)r["ismanaged"];
+                        var nameFormatString = "{0}_{1}{2}";
+                        var managedText = string.Empty;
+                        if (isManaged)
+                        {
+                            managedText = "_managed";
+                        }
+                       //  nameFormatString = string.Format(nameFormatString, solName,solVersion,
+
+                        //var managed = r.FormattedValues["ismanaged"];
+
+                        var name = string.Format(nameFormatString, solName, solVersion, managedText).Replace(".", "_");
+                        scripts.Add(name);
+                    }
+                });
+
+                return scripts.ToArray();
+            }
+            catch (Exception ex)
+            {
+                _LogFactory().WriteError("Exception has occured checking journal");
+                _LogFactory().WriteError(ex.ToString());
+                throw;
+            }
         }
 
-        protected virtual string GetExecutedScriptsSql(string table)
-        {
-            throw new NotImplementedException();
-            // return string.Format("select [ScriptName] from {0} order by [ScriptName]", (object)table);
-        }
-
+        /// <summary>
+        /// Records a database upgrade for a database specified in a given connection string.
+        /// </summary>
+        /// <param name="script">The script.</param>
         public void StoreExecutedScript(SqlScript script)
         {
-            throw new NotImplementedException();
-            //this.connectionManager().ExecuteCommandsWithManagedConnection((Action<Func<IDbCommand>>)(dbCommandFactory =>
-            //{
-            //    using (IDbCommand resource_0 = dbCommandFactory())
-            //    {
-            //        resource_0.CommandText = string.Format("insert into {0} (ScriptName, Applied) values (@scriptName, @applied)", (object)this.schemaTableName);
-            //        IDbDataParameter local_1 = resource_0.CreateParameter();
-            //        local_1.ParameterName = "scriptName";
-            //        local_1.Value = (object)script.Name;
-            //        resource_0.Parameters.Add((object)local_1);
-            //        IDbDataParameter local_2 = resource_0.CreateParameter();
-            //        local_2.ParameterName = "applied";
-            //        local_2.Value = (object)DateTime.Now;
-            //        resource_0.Parameters.Add((object)local_2);
-            //        resource_0.CommandType = CommandType.Text;
-            //        resource_0.ExecuteNonQuery();
-            //    }
-            //}));
-        }
+          // No need, as Crm keeps a record of each applied solution..
+            var solution = Guard.EnsureIs<CrmSolutionFile, SqlScript>(script, "script");
 
+        }
 
     }
 }

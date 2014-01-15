@@ -33,11 +33,14 @@ namespace CrmUp
         /// <returns></returns>
         public IEnumerable<SqlScript> GetScripts(IConnectionManager connectionManager)
         {
+            //NOTE: I am removing the namespace and folder information present in the ManifestResourceName from the script name, so only the filename is used.
+            // This is because the CRM journal table (solution entity) can not store this additional information in it, so it 
+            // can never be used when querying CRM to determine if a solution has allready been imported - making it pointless.
             return assembly
                 .GetManifestResourceNames()
                 .Where(filter)
                 .OrderBy(x => x)
-                .Select(s => CrmSolutionFile.FromStream(s, assembly.GetManifestResourceStream(s)))
+                .Select(s => CrmSolutionFile.FromStream(s.Split(new char[]{'.'},StringSplitOptions.RemoveEmptyEntries).Last(), assembly.GetManifestResourceStream(s)))
                 .ToList();
         }
 
