@@ -134,8 +134,10 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="TestScripts\metadatabrowser_1_0_0_1_managed.zip" />
-    <EmbeddedResource Include="TestScripts\metadatabrowser_1_0_0_2_managed.zip" />
+    <EmbeddedResource Include="TestScripts\TP888888_1_0_0_1_managed.zip" />
+    <EmbeddedResource Include="TestScripts\TP999999_1_0_0_0_managed.zip" />
+    <None Include="TestScripts\Unmanaged\TP888888_1_0_0_1.zip" />
+    <None Include="TestScripts\Unmanaged\TP999999_1_0_0_0.zip" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\CrmUp.Tests.dll" />
