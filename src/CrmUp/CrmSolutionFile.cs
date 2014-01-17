@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using DbUp.Engine;
 
@@ -8,7 +11,7 @@ namespace CrmUp
 {
     public class CrmSolutionFile : SqlScript
     {
-       
+
         public CrmSolutionFile(string name, Byte[] fileBytes)
             : base(name, Convert.ToBase64String(fileBytes))
         {
@@ -18,15 +21,41 @@ namespace CrmUp
         /// <summary>
         /// Returns a new Crm Solution file from the given stream.
         /// </summary>
-        /// <param name="scriptName">The name of this script.</param>
-        /// <param name="stream">The stream containing solution file data.</param>
+        /// <param name="assembly"></param>
+        /// <param name="manifestResourceName"></param>
         /// <returns></returns>
-        public new static CrmSolutionFile FromStream(string scriptName, Stream stream)
+        public static CrmSolutionFile FromEmbeddedResource(Assembly assembly, string manifestResourceName)
         {
-            using (var resourceStreamReader = new StreamReader(stream, Encoding.Default, true))
+            if (string.IsNullOrEmpty(manifestResourceName))
             {
-                string c = resourceStreamReader.ReadToEnd();
-                return new CrmSolutionFile(scriptName, GetStreamBytes(stream));
+                throw new ArgumentException("manifestResourceName");
+            }
+
+            if (assembly == null)
+            {
+                throw new ArgumentNullException("assembly");
+            }
+
+            // Split the resource manifest name into is components, removing path information relating to where it is in assembly. We only want the file name.
+            var scriptPathArray = manifestResourceName.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            int segmentCount = scriptPathArray.Count();
+            if (segmentCount < 2)
+            {
+                throw new Exception("Embedded solution files should be named ending '.zip'");
+            }
+            var fileName = string.Format("{0}.{1}", scriptPathArray[segmentCount - 2], scriptPathArray[segmentCount - 1]);
+            var scriptName = System.IO.Path.GetFileNameWithoutExtension(fileName);
+            using (var resource = assembly.GetManifestResourceStream(manifestResourceName))
+            {
+                if (resource == null)
+                {
+                    throw new ArgumentException("No embedded resource found with the name " + manifestResourceName + " inside assembly: " + assembly.FullName);
+                }
+
+                using (var resourceStreamReader = new StreamReader(resource, Encoding.Default, true))
+                {
+                    return new CrmSolutionFile(scriptName, GetStreamBytes(resourceStreamReader.BaseStream));
+                }
             }
         }
 
@@ -35,7 +64,7 @@ namespace CrmUp
         /// </summary>
         /// <param name="stream"></param>
         /// <returns></returns>
-        public static byte[] GetStreamBytes(Stream stream)
+        protected static byte[] GetStreamBytes(Stream stream)
         {
             if (stream.CanSeek && stream.Position > 0)
             {
@@ -76,6 +105,6 @@ namespace CrmUp
 
         public Byte[] FileBytes { get; set; }
 
-       
+
     }
 }

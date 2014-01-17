@@ -40,7 +40,7 @@ namespace CrmUp
                 .GetManifestResourceNames()
                 .Where(filter)
                 .OrderBy(x => x)
-                .Select(s => CrmSolutionFile.FromStream(s.Split(new char[]{'.'},StringSplitOptions.RemoveEmptyEntries).Last(), assembly.GetManifestResourceStream(s)))
+                .Select(s => CrmSolutionFile.FromEmbeddedResource(assembly, s))
                 .ToList();
         }
 

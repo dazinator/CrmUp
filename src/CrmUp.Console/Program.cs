@@ -41,11 +41,11 @@ namespace CrmUp
 
             // Ensure the Crm Organisation exists. Get Crm Organisation name from connection string.
             var crmConnection = CrmConnection.Parse(connString);
-            EnsureOrganisation(crmConnection);
+            EnsureOrganisation(crmConnection, "TestOrgName", "Test Org", "administrator");
 
             var upgrader =
                DeployChanges.To
-                            .DynamicsCrm(connectionString, isKey)
+                            .DynamicsCrm(connectionStringArgument, isKey)
                             .WithSolutionsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
                             .LogToConsole()
                             .Build();
@@ -171,8 +171,7 @@ namespace CrmUp
                 Console.WriteLine("The application encountered an error..");
                 Console.WriteLine("Message: {0}", ex.Message);
                 Console.WriteLine("Stack Trace: {0}", ex.StackTrace);
-                Console.WriteLine("Inner Fault: {0}",
-                    null == ex.InnerException.Message ? "No Inner Fault" : ex.InnerException.Message);
+                Console.WriteLine("Inner Fault: {0}",string.IsNullOrEmpty(ex.InnerException.Message) ? "No Inner Fault" : ex.InnerException.Message);
             }
             catch (System.Exception ex)
             {
