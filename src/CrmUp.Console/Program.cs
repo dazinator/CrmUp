@@ -15,19 +15,18 @@ namespace CrmUp
     {
         static int Main(string[] args)
         {
-
+            // Crm org connection string is required in order to connect to an existing Crm org to run the Solution Imports.
             var orgConnectionString = "Url=crmurl:5555/OrgName;Domain=domain;UserName=username;Password=password;Timeout=00:06:00;";
-            var discoveryServiceConnectionString = "Urlcrmurl:5555/XRMDeployment/2011/Deployment.svc;Domain=domain;UserName=username;Password=password;Timeout=00:06:00;";
-            //var orgName = "testOrgName";
-            //var domain = "domain";
-            //var username = "username";
-            //var password = "password";
+            // Crm discovery service connection string is required in order to check to see if the organisation exists.
+            var discoveryServiceConnectionString = "Urlcrmurl:5555/XRMServices/2011/Discovery.svc;Domain=domain;UserName=username;Password=password;Timeout=00:06:00;";
+            // Crm deployment service connection string is required in order to create a Crm organisation if it doesn't exist.
+            var deploymentServiceConnectionString = "Url=someurl:5555/XRMDeployment/2011/Deployment.svc;Domain=proddev;UserName=administrator;Password=password;Timeout=00:06:00;";
 
             var upgrader =
                DeployChanges.To
                             .DynamicsCrmOrganisation(orgConnectionString)
-                            .CreateIfDoesNotExist(OrgToCreate, discoveryServiceConnectionString)
                             .WithSolutionsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
+                            .CreateIfDoesNotExist(OrgToCreate, discoveryServiceConnectionString, deploymentServiceConnectionString)
                             .LogToConsole()
                             .Build();
 
@@ -51,6 +50,8 @@ namespace CrmUp
 
         private static Organization OrgToCreate()
         {
+            // Todo - can deserialise this information from an xml file with an org entity?
+            // Perhaps also support token substitution in that file..
             return null;
         }
 

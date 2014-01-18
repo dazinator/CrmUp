@@ -20,7 +20,7 @@ namespace CrmUp
             return DynamicsCrmUpgradeEngineBuilder(new CrmConnectionManager(crmServiceProvider, crmOrgManager));
         }
 
-        public static UpgradeEngineBuilder CreateIfDoesNotExist(this UpgradeEngineBuilder builder, Func<Organization> orgToCreate, string discoveryServiceConnectionString = "")
+        public static UpgradeEngineBuilder CreateIfDoesNotExist(this UpgradeEngineBuilder builder, Func<Organization> orgToCreate, string discoveryServiceConnectionString = "", string deploymentServiceConnectionString = "")
         {
             builder.Configure(a =>
             {
@@ -28,7 +28,10 @@ namespace CrmUp
                 // Need to configure the deployment service url..
                 var connProvider = conn.CrmServiceProvider.ConnectionProvider as ExplicitConnectionStringProviderWithFallbackToConfig;
                 if (connProvider != null)
+                {
                     connProvider.DiscoveryServiceConnectionString = discoveryServiceConnectionString;
+                    connProvider.DeploymentServiceConnectionString = deploymentServiceConnectionString;
+                }
             });
             return builder;
         }
