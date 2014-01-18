@@ -101,6 +101,7 @@
     <Compile Include="CrmConnectivity\CrmClientCredentialsProvider.cs" />
     <Compile Include="CrmConnectivity\ExplicitConnectionStringProviderWithFallbackToConfig.cs" />
     <Compile Include="CrmConnectivity\ICrmClientCredentialsProvider.cs" />
+    <Compile Include="CrmEntityJournal.cs" />
     <Compile Include="CrmManagement\CrmOrganisationManager.cs" />
     <Compile Include="CrmManagement\ICrmOrganisationManager.cs" />
     <Compile Include="CrmConnectivity\ICrmServiceProvider.cs" />
@@ -111,6 +112,9 @@
     <Compile Include="CrmUpExtensions.cs" />
     <Compile Include="EmbeddedCrmSolutionScriptProvider.cs" />
     <Compile Include="CrmConnectivity\FailedToConnectToCrmException.cs" />
+    <Compile Include="CrmMetadataFluentApi\EntityConstruction.cs" />
+    <Compile Include="CrmMetadataFluentApi\EntityMetadataBuilder.cs" />
+    <Compile Include="CrmMetadataFluentApi\EntityAttributeBuilder.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="CrmConnectivity\ICrmConnectionProvider.cs" />
     <Compile Include="OrganisationDoesNotExistException.cs" />

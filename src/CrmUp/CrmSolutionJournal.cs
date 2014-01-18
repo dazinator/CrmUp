@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DbUp.Engine;
 using DbUp.Engine.Output;
 using DbUp.Engine.Transactions;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 
 namespace CrmUp
@@ -16,7 +16,7 @@ namespace CrmUp
     /// </summary>
     public class CrmSolutionJournal : IJournal
     {
-       // private readonly string schemaTableName;
+        // private readonly string schemaTableName;
         private readonly Func<IConnectionManager> _ConnectionManagerFactory;
         private readonly Func<IUpgradeLog> _LogFactory;
 
@@ -49,38 +49,39 @@ namespace CrmUp
                 var conn = _ConnectionManagerFactory();
                 var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
                 crmConnManager.ExecuteWithManagedConnection((a) =>
-                {
-                    var atts =
-                        new ColumnSet(new string[] { "version", "uniquename", "ismanaged" });
-                    //new ColumnSet(new string[] { "publisherid", "installedon", "version", "versionnumber", "friendlyname" });
-                    var querySampleSolution = new QueryExpression
                     {
-                        EntityName = "solution",
-                        ColumnSet = atts
-                    };
+                        var atts =
+                            new ColumnSet(new string[] { "version", "uniquename", "ismanaged" });
+                        //new ColumnSet(new string[] { "publisherid", "installedon", "version", "versionnumber", "friendlyname" });
+                        var querySampleSolution = new QueryExpression
+                            {
+                                EntityName = "solution",
+                                ColumnSet = atts
+                            };
 
-                    //  querySampleSolution.Criteria.AddCondition("uniquename", ConditionOperator.Equal, solutionUniqueName);
-                    var results = a().RetrieveMultiple(querySampleSolution);
-                    foreach (var r in results.Entities)
-                    {
-                        
-                        var solName = r["uniquename"];
-                        var solVersion = r["version"];
-                        var isManaged = (bool)r["ismanaged"];
-                        var nameFormatString = "{0}_{1}{2}";
-                        var managedText = string.Empty;
-                        if (isManaged)
+                        //  querySampleSolution.Criteria.AddCondition("uniquename", ConditionOperator.Equal, solutionUniqueName);
+                        var results = a().RetrieveMultiple(querySampleSolution);
+                        foreach (var r in results.Entities)
                         {
-                            managedText = "_managed";
+
+                            var solName = r["uniquename"];
+                            var solVersion = r["version"];
+                            var isManaged = (bool)r["ismanaged"];
+                            var nameFormatString = "{0}_{1}{2}";
+                            var managedText = string.Empty;
+                            if (isManaged)
+                            {
+                                managedText = "_managed";
+                            }
+                            //  nameFormatString = string.Format(nameFormatString, solName,solVersion,
+
+                            //var managed = r.FormattedValues["ismanaged"];
+
+                            var name = string.Format(nameFormatString, solName, solVersion, managedText)
+                                             .Replace(".", "_");
+                            scripts.Add(name);
                         }
-                       //  nameFormatString = string.Format(nameFormatString, solName,solVersion,
-
-                        //var managed = r.FormattedValues["ismanaged"];
-
-                        var name = string.Format(nameFormatString, solName, solVersion, managedText).Replace(".", "_");
-                        scripts.Add(name);
-                    }
-                });
+                    });
 
                 return scripts.ToArray();
             }
@@ -98,7 +99,7 @@ namespace CrmUp
         /// <param name="script">The script.</param>
         public void StoreExecutedScript(SqlScript script)
         {
-          // No need, as Crm keeps a record of each applied solution..
+            // No need, as Crm keeps a record of each applied solution..
             var solution = Guard.EnsureIs<CrmSolutionFile, SqlScript>(script, "script");
 
         }
