@@ -34,7 +34,7 @@ namespace CrmUp.Tests
                 // fake connection to crm and get scripts to be executed.
                 _fakeConnection = _mockRepos.CreateMultiMock<IOrganizationService>(typeof(IOrganizationService), typeof(IDisposable));
                 _fakeConnection = MockRepository.GenerateMock<IOrganizationService, IDisposable>();
-                _fakeConnectionManager = new TestCrmConnectionManager(_fakeConnection, "Test", true);
+                _fakeConnectionManager = new FakeCrmConnectionManager(_fakeConnection, null, null,null);
                 var upgradeLog = new ConsoleUpgradeLog();
                 _fakeConnectionManager.OperationStarting(upgradeLog, new List<SqlScript>());
                 return new CrmSolutionScriptExecutor(() => { return _fakeConnectionManager; },

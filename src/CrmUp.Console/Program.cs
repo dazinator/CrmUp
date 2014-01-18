@@ -16,36 +16,17 @@ namespace CrmUp
         static int Main(string[] args)
         {
 
-            var connectionStringArgument = args.FirstOrDefault();
-            bool isKey = false;
-            if (string.IsNullOrEmpty(connectionStringArgument))
-            {
-                isKey = true;
-                connectionStringArgument = "CrmConnectionString";
-            }
-
-            string connString = string.Empty;
-            if (isKey)
-            {
-                var connStringSetting = ConfigurationManager.ConnectionStrings[connectionStringArgument];
-                if (connStringSetting == null)
-                {
-                    throw new ArgumentException("Connection string not found in config file with name:" + connectionStringArgument);
-                }
-                connString = connStringSetting.ConnectionString;
-            }
-            else
-            {
-                connString = connectionStringArgument;
-            }
-
-            // Ensure the Crm Organisation exists. Get Crm Organisation name from connection string.
-            var crmConnection = CrmConnection.Parse(connString);
-            EnsureOrganisation(crmConnection, "TestOrgName", "Test Org", "administrator");
+            var orgConnectionString = "Url=crmurl:5555/OrgName;Domain=domain;UserName=username;Password=password;Timeout=00:06:00;";
+            var discoveryServiceConnectionString = "Urlcrmurl:5555/XRMDeployment/2011/Deployment.svc;Domain=domain;UserName=username;Password=password;Timeout=00:06:00;";
+            //var orgName = "testOrgName";
+            //var domain = "domain";
+            //var username = "username";
+            //var password = "password";
 
             var upgrader =
                DeployChanges.To
-                            .DynamicsCrm(connectionStringArgument, isKey)
+                            .DynamicsCrmOrganisation(orgConnectionString)
+                            .CreateIfDoesNotExist(OrgToCreate, discoveryServiceConnectionString)
                             .WithSolutionsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
                             .LogToConsole()
                             .Build();
@@ -66,6 +47,11 @@ namespace CrmUp
             Console.ResetColor();
             return 0;
 
+        }
+
+        private static Organization OrgToCreate()
+        {
+            return null;
         }
 
         private static void EnsureOrganisation(CrmConnection crmConnection, string orgName, string orgFriendlyName, string sysAdminName)
@@ -171,7 +157,7 @@ namespace CrmUp
                 Console.WriteLine("The application encountered an error..");
                 Console.WriteLine("Message: {0}", ex.Message);
                 Console.WriteLine("Stack Trace: {0}", ex.StackTrace);
-                Console.WriteLine("Inner Fault: {0}",string.IsNullOrEmpty(ex.InnerException.Message) ? "No Inner Fault" : ex.InnerException.Message);
+                Console.WriteLine("Inner Fault: {0}", string.IsNullOrEmpty(ex.InnerException.Message) ? "No Inner Fault" : ex.InnerException.Message);
             }
             catch (System.Exception ex)
             {

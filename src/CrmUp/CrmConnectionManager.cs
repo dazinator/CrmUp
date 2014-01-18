@@ -5,41 +5,83 @@ using DbUp.Engine;
 using DbUp.Engine.Output;
 using DbUp.Engine.Transactions;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Deployment;
+using Microsoft.Xrm.Sdk.Discovery;
 
 namespace CrmUp
 {
     public class CrmConnectionManager : IConnectionManager
     {
+        private ICrmServiceProvider _CrmServiceProvider = null;
+        private IOrganizationService _organizationService = null;
+        private ICrmOrganisationManager _orgManager = null;
+        private Func<Organization> _ensureOrganisationExists = null;
 
-        private IOrganizationService _UpgradeConnection;
-        private string _ConnectionStringKey;
-        private bool _IsConnectionStringKey;
         private bool errorOccured = false;
-        public CrmConnectionManager(string connectionStringOrKey, bool isConnectionStringKey = false)
+
+        public CrmConnectionManager(ICrmServiceProvider crmServiceProvider, ICrmOrganisationManager orgManager)
         {
-            _ConnectionStringKey = connectionStringOrKey;
-            _IsConnectionStringKey = isConnectionStringKey;
+            _CrmServiceProvider = crmServiceProvider;
+            _orgManager = orgManager;
+            // _ensureOrganisationExists = ensureOrganisationExists;
+        }
+
+        public Func<Organization> EnsureOrganisationExists
+        {
+            get { return _ensureOrganisationExists; }
+            set { _ensureOrganisationExists = value; }
         }
 
         public IDisposable OperationStarting(IUpgradeLog upgradeLog, List<SqlScript> executedScripts)
         {
-            _UpgradeConnection = CreateConnection(upgradeLog);
-
-            return new DelegateDisposable(() =>
+            try
+            {
+                // Before connecting, do we need to ensure organisation exists?
+                // Check organisation exists
+                if (_ensureOrganisationExists != null)
                 {
-                    var disposable = _UpgradeConnection as IDisposable;
+                    var orgToCheck = _ensureOrganisationExists();
+                    upgradeLog.WriteInformation("Checking whether '{0}' organization exists..", orgToCheck.UniqueName);
+                    var orgs = _orgManager.GetOrganisations();
+                    OrganizationDetail orgFound = null;
+                    foreach (var organizationDetail in orgs)
+                    {
+                        if (organizationDetail.UniqueName.ToLower() == orgToCheck.UniqueName.ToLower())
+                        {
+                            orgFound = organizationDetail;
+                            upgradeLog.WriteInformation("  - Yes {0} exists!", orgFound.UniqueName);
+                            // Use discovery information to establish connection?
+                            //_organizationService = _CrmServiceProvider.GetOrganisationService(orgFound, );
+                            break;
+                        }
+                    }
+
+                    if (orgFound == null)
+                    {
+                        upgradeLog.WriteInformation("Creating organization: {1}", orgToCheck.UniqueName);
+                        _orgManager.CreateOrganization(orgToCheck);
+                        upgradeLog.WriteInformation("Organisation Created!");
+                    }
+                }
+
+                // Initialise connection to organisation.
+                _organizationService = _CrmServiceProvider.GetOrganisationService();
+                return new DelegateDisposable(() =>
+                {
+                    var disposable = _organizationService as IDisposable;
                     if (disposable != null)
                     {
                         disposable.Dispose();
-                        _UpgradeConnection = null;
+                        _organizationService = null;
                     }
                 });
-        }
+            }
+            catch (Exception)
+            {
+                errorOccured = true;
+                throw;
+            }
 
-        public virtual IOrganizationService CreateConnection(IUpgradeLog upgradeLog)
-        {
-            var factory = new OrganizationProxyFactory(_ConnectionStringKey, _IsConnectionStringKey);
-            return factory.CreateOrganizationServiceProxy();
         }
 
         public virtual void ExecuteWithManagedConnection(Action<Func<IOrganizationService>> action)
@@ -48,7 +90,7 @@ namespace CrmUp
                 throw new InvalidOperationException("Error occured on previous script execution");
             try
             {
-                action(() => _UpgradeConnection);
+                action(() => _organizationService);
             }
             catch (Exception)
             {
@@ -56,7 +98,7 @@ namespace CrmUp
                 throw;
             }
         }
-        
+
         public void ExecuteCommandsWithManagedConnection(Action<Func<IDbCommand>> action)
         {
             throw new NotImplementedException();
@@ -74,9 +116,13 @@ namespace CrmUp
             return new string[] { scriptContents };
         }
 
+        public ICrmServiceProvider CrmServiceProvider {
+            get { return _CrmServiceProvider; } 
+        }
+
         public TransactionMode TransactionMode { get; set; }
         public bool IsScriptOutputLogged { get; set; }
-
+        
         class DelegateDisposable : IDisposable
         {
             private readonly Action dispose;

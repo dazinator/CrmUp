@@ -123,12 +123,14 @@
   <ItemGroup>
     <Compile Include="CrmSolutionScriptExecutorTests.cs" />
     <Compile Include="CrmConnectionManagerTests.cs" />
+    <Compile Include="FakeCrmServiceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sample Code\Apply Solution File to Crm.cs" />
+    <Compile Include="Sample Code\SolutionFileTests.cs" />
     <Compile Include="ScriptProviderTests.cs" />
     <Compile Include="SolutionFileTests.cs" />
     <Compile Include="SpecificationFor.cs" />
-    <Compile Include="TestCrmConnectionManager.cs" />
+    <Compile Include="FakeCrmConnectionManager.cs" />
     <Compile Include="ThenAttribute.cs" />
   </ItemGroup>
   <ItemGroup>

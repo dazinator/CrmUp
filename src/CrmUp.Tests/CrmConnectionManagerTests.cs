@@ -24,7 +24,7 @@ namespace CrmUp.Tests
         {
             _mockConnection = _mockRepos.CreateMultiMock<IOrganizationService>(typeof(IOrganizationService), typeof(IDisposable));
             _mockConnection = MockRepository.GenerateMock<IOrganizationService, IDisposable>();
-            return new TestCrmConnectionManager(_mockConnection, "Test", true);
+            return new FakeCrmConnectionManager(_mockConnection, null, null, null);
         }
 
         public override void When()

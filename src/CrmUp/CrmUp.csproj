@@ -96,18 +96,25 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="CrmConnectivity\AppSettingsConnectionStringProvider.cs" />
     <Compile Include="CrmConnectionManager.cs" />
+    <Compile Include="CrmConnectivity\CrmClientCredentialsProvider.cs" />
+    <Compile Include="CrmConnectivity\ExplicitConnectionStringProviderWithFallbackToConfig.cs" />
+    <Compile Include="CrmConnectivity\ICrmClientCredentialsProvider.cs" />
+    <Compile Include="CrmManagement\CrmOrganisationManager.cs" />
+    <Compile Include="CrmManagement\ICrmOrganisationManager.cs" />
+    <Compile Include="CrmConnectivity\ICrmServiceProvider.cs" />
+    <Compile Include="CrmConnectivity\CrmConnectionProvider.cs" />
     <Compile Include="CrmSolutionFile.cs" />
     <Compile Include="CrmSolutionJournal.cs" />
     <Compile Include="CrmSolutionScriptExecutor.cs" />
     <Compile Include="CrmUpExtensions.cs" />
     <Compile Include="EmbeddedCrmSolutionScriptProvider.cs" />
-    <Compile Include="FailedToConnectToCrmException.cs" />
+    <Compile Include="CrmConnectivity\FailedToConnectToCrmException.cs" />
     <Compile Include="Guard.cs" />
-    <Compile Include="IOrganizationProxyFactory.cs" />
+    <Compile Include="CrmConnectivity\ICrmConnectionProvider.cs" />
     <Compile Include="OrganisationDoesNotExistException.cs" />
-    <Compile Include="OrganizationProxyFactory.cs" />
+    <Compile Include="CrmConnectivity\CrmServiceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
