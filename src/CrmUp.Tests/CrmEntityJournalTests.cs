@@ -23,7 +23,7 @@ namespace CrmUp.Tests
         MockRepository _mockRepos = new MockRepository();
         private IOrganizationService _fakeConnection;
         private IConnectionManager _fakeConnectionManager = null;
-
+        private ICrmOrganisationManager _mockOrganisationManager = null;
 
         [Then]
         public void Should_Create_Journal_Record_When_A_Script_Is_Stored()
@@ -34,8 +34,10 @@ namespace CrmUp.Tests
             _fakeConnection = MockRepository.GenerateMock<IOrganizationService, IDisposable>();
             _fakeConnectionManager = new FakeCrmConnectionManager(_fakeConnection, null, null, null);
             var upgradeLog = new ConsoleUpgradeLog();
+            _mockOrganisationManager = MockRepository.GenerateMock<ICrmOrganisationManager, IDisposable>();
+
             _fakeConnectionManager.OperationStarting(upgradeLog, new List<SqlScript>());
-            var subject = new CrmEntityJournal(() => { return _fakeConnectionManager; }, () => { return upgradeLog; });
+            var subject = new CrmEntityJournal(() => { return _fakeConnectionManager; }, () => { return upgradeLog; }, _mockOrganisationManager);
 
             // Act
             var newScript = new SqlScript("mytest", null);

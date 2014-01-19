@@ -8,19 +8,19 @@ public class FakeCrmConnectionManager : CrmConnectionManager
 {
     private ICrmServiceProvider _crmServiceProvider = null;
   
-    public FakeCrmConnectionManager(ICrmServiceProvider crmServiceProvider, ICrmOrganisationManager crmOrgManager)
-        : base(crmServiceProvider, crmOrgManager)
+    public FakeCrmConnectionManager(ICrmServiceProvider crmServiceProvider)
+        : base(crmServiceProvider)
     {
         _crmServiceProvider = crmServiceProvider;
     }
 
     public FakeCrmConnectionManager(IOrganizationService testConnection, IDeploymentService deploymentService, IDiscoveryService discoveryService, ICrmOrganisationManager crmOrgManager)
-        : base(new FakeCrmServiceProvider(testConnection, deploymentService, discoveryService), crmOrgManager)
+        : base(new FakeCrmServiceProvider(testConnection, deploymentService, discoveryService))
     {
     }
 
     public FakeCrmConnectionManager()
-        : base(new FakeCrmServiceProvider(null, null, null), null)
+        : base(new FakeCrmServiceProvider(null, null, null))
     {
     }
 

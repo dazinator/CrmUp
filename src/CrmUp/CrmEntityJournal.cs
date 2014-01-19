@@ -5,35 +5,85 @@ using DbUp.Engine;
 using DbUp.Engine.Output;
 using DbUp.Engine.Transactions;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Discovery;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
 
 namespace CrmUp
 {
-    public class CrmEntityJournal : IJournal
+
+    public interface ISupportOrgCreation
+    {
+        Func<CreateOrganisationArgs> EnsureOrganisationExists { get; set; }
+
+    }
+    public class CrmEntityJournal : IJournal, ISupportOrgCreation
     {
 
         public const string JournalEntityName = "crmup_journal";
 
-
         // private readonly string schemaTableName;
         private readonly Func<IConnectionManager> _ConnectionManagerFactory;
         private readonly Func<IUpgradeLog> _LogFactory;
+        private ICrmOrganisationManager _orgManager = null;
 
-        public CrmEntityJournal(Func<IConnectionManager> connectionManager, Func<IUpgradeLog> logger)
+        public CrmEntityJournal(Func<IConnectionManager> connectionManager, Func<IUpgradeLog> logger, ICrmOrganisationManager orgManager)
         {
             this._ConnectionManagerFactory = connectionManager;
             _LogFactory = logger;
+            _orgManager = orgManager;
         }
+
+        private Func<CreateOrganisationArgs> _ensureOrganisationExists = null;
+        public Func<CreateOrganisationArgs> EnsureOrganisationExists
+        {
+            get { return _ensureOrganisationExists; }
+            set { _ensureOrganisationExists = value; }
+        }
+
 
         public string[] GetExecutedScripts()
         {
             try
             {
                 var log = _LogFactory();
+
+
+                // Before connecting, do we need to ensure organisation exists?
+                // Check organisation exists
+                if (_ensureOrganisationExists != null)
+                {
+                    var orgRequest = _ensureOrganisationExists();
+                    log.WriteInformation("Checking whether '{0}' organization exists..", orgRequest.Organisation.UniqueName);
+                    var orgs = _orgManager.GetOrganisations();
+                    OrganizationDetail orgFound = null;
+                    foreach (var organizationDetail in orgs)
+                    {
+                        if (organizationDetail.UniqueName.ToLower() == orgRequest.Organisation.UniqueName.ToLower())
+                        {
+                            orgFound = organizationDetail;
+                            log.WriteInformation("  - Yes {0} exists!", orgFound.UniqueName);
+                            // Use discovery information to establish connection?
+                            //_organizationService = _CrmServiceProvider.GetOrganisationService(orgFound, );
+                            break;
+                        }
+                    }
+
+                    if (orgFound == null)
+                    {
+                        log.WriteInformation("Creating organization: {0}", orgRequest.Organisation.UniqueName);
+                        _orgManager.CreateOrganization(orgRequest.Organisation, orgRequest.SystemAdmingUser, log);
+                        log.WriteInformation("Organisation Created!");
+                    }
+                }
+
                 log.WriteInformation("Fetching list of already executed scripts.");
                 var scripts = new List<string>();
+
+                // check to see if org exists if necessary.
+                var conn = _ConnectionManagerFactory();
+                var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
 
                 var exists = DoesJournalEntityExist();
                 if (!exists)
@@ -42,8 +92,6 @@ namespace CrmUp
                     return new string[0];
                 }
 
-                var conn = _ConnectionManagerFactory();
-                var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
                 crmConnManager.ExecuteWithManagedConnection((a) =>
                 {
                     var atts = new ColumnSet(new string[] { "crmup_scriptname", "crmup_appliedon" });

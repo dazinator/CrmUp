@@ -41,9 +41,10 @@ namespace CrmUp
 
         }
 
-        private static Organization OrgToCreate()
+        private static CreateOrganisationArgs OrgToCreate()
         {
-            return new Microsoft.Xrm.Sdk.Deployment.Organization
+            var args = new CreateOrganisationArgs();
+            args.Organisation = new Microsoft.Xrm.Sdk.Deployment.Organization
                 {
                     BaseCurrencyCode = "GPB",
                     BaseCurrencyName = "Pound Sterling",
@@ -57,6 +58,8 @@ namespace CrmUp
                     SrsUrl = "http://VM-PRODDEV-SQL/reportserver",
                     SqmIsEnabled = false
                 };
+            args.SystemAdmingUser = ConfigurationManager.AppSettings["CrmSystemAdminUserAccount"];
+            return args;
         }
 
     }
