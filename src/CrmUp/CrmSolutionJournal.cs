@@ -14,6 +14,7 @@ namespace CrmUp
     /// An implementation of the <see cref="IJournal"/> interface which tracks version numbers for a 
     /// Dynamics Crm Organisation by querying the solutions entity in CRM.
     /// </summary>
+    [Obsolete("Should use the CrmEntityJournal instead, which uses a dedicated customisable entity in Crm as opposed to solution records which are non customisable.")]
     public class CrmSolutionJournal : IJournal
     {
         // private readonly string schemaTableName;

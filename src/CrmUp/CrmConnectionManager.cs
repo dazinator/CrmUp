@@ -10,12 +10,20 @@ using Microsoft.Xrm.Sdk.Discovery;
 
 namespace CrmUp
 {
+
+    public class CreateOrganisationParams
+    {
+
+        public Organization Organisation { get; set; }
+        public string SystemAdmingUser { get; set; }
+    }
+
     public class CrmConnectionManager : IConnectionManager
     {
         private ICrmServiceProvider _CrmServiceProvider = null;
         private IOrganizationService _organizationService = null;
         private ICrmOrganisationManager _orgManager = null;
-        private Func<Organization> _ensureOrganisationExists = null;
+        private Func<CreateOrganisationParams> _ensureOrganisationExists = null;
 
         private bool errorOccured = false;
 
@@ -26,7 +34,7 @@ namespace CrmUp
             // _ensureOrganisationExists = ensureOrganisationExists;
         }
 
-        public Func<Organization> EnsureOrganisationExists
+        public Func<CreateOrganisationParams> EnsureOrganisationExists
         {
             get { return _ensureOrganisationExists; }
             set { _ensureOrganisationExists = value; }
@@ -40,13 +48,13 @@ namespace CrmUp
                 // Check organisation exists
                 if (_ensureOrganisationExists != null)
                 {
-                    var orgToCheck = _ensureOrganisationExists();
-                    upgradeLog.WriteInformation("Checking whether '{0}' organization exists..", orgToCheck.UniqueName);
+                    var orgRequest = _ensureOrganisationExists();
+                    upgradeLog.WriteInformation("Checking whether '{0}' organization exists..", orgRequest.Organisation.UniqueName);
                     var orgs = _orgManager.GetOrganisations();
                     OrganizationDetail orgFound = null;
                     foreach (var organizationDetail in orgs)
                     {
-                        if (organizationDetail.UniqueName.ToLower() == orgToCheck.UniqueName.ToLower())
+                        if (organizationDetail.UniqueName.ToLower() == orgRequest.Organisation.UniqueName.ToLower())
                         {
                             orgFound = organizationDetail;
                             upgradeLog.WriteInformation("  - Yes {0} exists!", orgFound.UniqueName);
@@ -58,8 +66,8 @@ namespace CrmUp
 
                     if (orgFound == null)
                     {
-                        upgradeLog.WriteInformation("Creating organization: {1}", orgToCheck.UniqueName);
-                        _orgManager.CreateOrganization(orgToCheck);
+                        upgradeLog.WriteInformation("Creating organization: {0}", orgRequest.Organisation.UniqueName);
+                        _orgManager.CreateOrganization(orgRequest.Organisation, orgRequest.SystemAdmingUser, upgradeLog);
                         upgradeLog.WriteInformation("Organisation Created!");
                     }
                 }
@@ -99,6 +107,21 @@ namespace CrmUp
             }
         }
 
+        public T ExecuteWithManagedConnection<T>(Func<Func<IOrganizationService>, T> actionWithResult)
+        {
+            if (errorOccured)
+                throw new InvalidOperationException("Error occured on previous script execution");
+            try
+            {
+                return actionWithResult(() => _organizationService);
+            }
+            catch (Exception)
+            {
+                errorOccured = true;
+                throw;
+            }
+        }
+
         public void ExecuteCommandsWithManagedConnection(Action<Func<IDbCommand>> action)
         {
             throw new NotImplementedException();
@@ -116,13 +139,14 @@ namespace CrmUp
             return new string[] { scriptContents };
         }
 
-        public ICrmServiceProvider CrmServiceProvider {
-            get { return _CrmServiceProvider; } 
+        public ICrmServiceProvider CrmServiceProvider
+        {
+            get { return _CrmServiceProvider; }
         }
 
         public TransactionMode TransactionMode { get; set; }
         public bool IsScriptOutputLogged { get; set; }
-        
+
         class DelegateDisposable : IDisposable
         {
             private readonly Action dispose;

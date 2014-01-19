@@ -29,6 +29,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'IntegrationTest|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\IntegrationTest\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AntiXSSLibrary">
       <HintPath>..\..\lib\Microsoft.CrmSdk.Extensions.6.0.2\lib\net40\AntiXSSLibrary.dll</HintPath>
@@ -115,6 +124,7 @@
     <Compile Include="CrmMetadataFluentApi\EntityConstruction.cs" />
     <Compile Include="CrmMetadataFluentApi\EntityMetadataBuilder.cs" />
     <Compile Include="CrmMetadataFluentApi\EntityAttributeBuilder.cs" />
+    <Compile Include="EntityUtils.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="CrmConnectivity\ICrmConnectionProvider.cs" />
     <Compile Include="OrganisationDoesNotExistException.cs" />

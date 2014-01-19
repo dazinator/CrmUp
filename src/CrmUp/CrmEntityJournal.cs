@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DbUp.Engine;
 using DbUp.Engine.Output;
 using DbUp.Engine.Transactions;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
+using Microsoft.Xrm.Sdk.Query;
 
 namespace CrmUp
 {
@@ -26,23 +29,69 @@ namespace CrmUp
 
         public string[] GetExecutedScripts()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var log = _LogFactory();
+                log.WriteInformation("Fetching list of already executed scripts.");
+                var scripts = new List<string>();
+
+                var exists = DoesJournalEntityExist();
+                if (!exists)
+                {
+                    log.WriteInformation(string.Format("The CrmUp journal entity could not be found in Crm. The Crm organisation is assumed to be at version 0."));
+                    return new string[0];
+                }
+
+                var conn = _ConnectionManagerFactory();
+                var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
+                crmConnManager.ExecuteWithManagedConnection((a) =>
+                {
+                    var atts = new ColumnSet(new string[] { "crmup_scriptname", "crmup_appliedon" });
+                    var querySampleSolution = new QueryExpression
+                    {
+                        EntityName = JournalEntityName,
+                        ColumnSet = atts
+                    };
+                    var results = a().RetrieveMultiple(querySampleSolution);
+                    scripts.AddRange(results.Entities.Select(r => (string)r["crmup_scriptname"]));
+                });
+
+                return scripts.ToArray();
+            }
+            catch (Exception ex)
+            {
+                _LogFactory().WriteError("Exception has occured checking journal");
+                _LogFactory().WriteError(ex.ToString());
+                throw;
+            }
         }
 
         public void StoreExecutedScript(SqlScript script)
         {
-            throw new NotImplementedException();
+            var log = _LogFactory();
+            EnsureJournalEnityExists();
+            var conn = _ConnectionManagerFactory();
+            var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
+            crmConnManager.ExecuteWithManagedConnection((a) =>
+                {
+
+                    var ent = new Entity();
+                    ent.LogicalName = JournalEntityName;
+                    ent.Attributes.Add("crmup_scriptname", script.Name);
+                    ent.Attributes.Add("crmup_appliedon", DateTime.UtcNow);
+                    var result = a().Create(ent);
+                });
         }
 
         public void EnsureJournalEnityExists()
         {
             // Check Crm metadata to see if entity exists.
-            bool exists = false;
+            _LogFactory().WriteInformation("Ensuring Crm has Journal Entity..");
+            bool exists = DoesJournalEntityExist();
             if (!exists)
             {
 
                 _LogFactory().WriteInformation("Creating journal entity in Crm..");
-
                 var journalEntityBuilder = EntityConstruction.ConstructEntity(JournalEntityName)
                                                              .DisplayName("Crm Up Journal Entry")
                                                              .Description(
@@ -74,7 +123,8 @@ namespace CrmUp
                 try
                 {
                     var conn = _ConnectionManagerFactory();
-                    var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
+                    var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn,
+                                                                                                  "ConnectionManager");
                     crmConnManager.ExecuteWithManagedConnection((a) =>
                         {
                             a().Execute(createrequest);
@@ -104,5 +154,39 @@ namespace CrmUp
                 }
             }
         }
+
+        public bool DoesJournalEntityExist()
+        {
+            var retrieveJournalEntityRequest = new RetrieveEntityRequest
+                {
+                    EntityFilters = EntityFilters.Entity,
+                    LogicalName = JournalEntityName
+                };
+
+            var conn = _ConnectionManagerFactory();
+            var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
+
+            var result = crmConnManager.ExecuteWithManagedConnection<RetrieveEntityResponse>((a) =>
+                 {
+                     try
+                     {
+                         var response = (RetrieveEntityResponse)a().Execute(retrieveJournalEntityRequest);
+                         return response;
+                     }
+                     catch (System.ServiceModel.FaultException<Microsoft.Xrm.Sdk.OrganizationServiceFault> fault)
+                     {
+                         if (fault.Message == "Could not find entity")
+                         {
+                             return null;
+                         }
+                         throw;
+                     }
+                 });
+
+            return result != null;
+
+        }
     }
+
+
 }

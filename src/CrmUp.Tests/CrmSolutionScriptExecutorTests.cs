@@ -51,7 +51,7 @@ namespace CrmUp.Tests
             }
 
             [Then]
-            public void Makes_Execute_Request_To_Crm_For_Multiple_Solutions()
+            public void Should_Execute_Multiple_Solution_Imports()
             {
                 var scriptCount = scriptsToExecute.Count();
                 OrganizationRequest req = null;
@@ -64,7 +64,7 @@ namespace CrmUp.Tests
             }
             
             [Then]
-            public void Makes_Execute_Request_To_Crm_For_A_Single_Solution()
+            public void Should_Execute_A_Single_Solution_Import()
             {
                 const int scriptCount = 1;
                 OrganizationRequest req = null;

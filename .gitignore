@@ -154,3 +154,9 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+
+# =========================
+# Sensitive Config
+# =========================
+App.IntegrationTest.config
+CrmUp.Console.exe.config

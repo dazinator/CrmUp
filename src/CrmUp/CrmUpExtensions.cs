@@ -66,7 +66,7 @@ namespace CrmUp
             var builder = new UpgradeEngineBuilder();
             builder.Configure(c => c.ConnectionManager = connectionManager);
             builder.Configure(c => c.ScriptExecutor = new CrmSolutionScriptExecutor(() => c.ConnectionManager, () => c.Log, () => c.VariablesEnabled, c.ScriptPreprocessors));
-            builder.Configure(c => c.Journal = new CrmSolutionJournal(() => c.ConnectionManager, () => c.Log));
+            builder.Configure(c => c.Journal = new CrmEntityJournal(() => c.ConnectionManager, () => c.Log));
             return builder;
         }
         #endregion
