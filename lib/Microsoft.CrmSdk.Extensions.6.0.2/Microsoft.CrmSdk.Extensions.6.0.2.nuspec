@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.CrmSdk.Extensions</id>
+    <version>6.0.2</version>
+    <title>Microsoft Dynamics CRM 2013 SDK client and portal assemblies</title>
+    <authors>crmsdk</authors>
+    <owners>crmsdk</owners>
+    <licenseUrl>http://download.microsoft.com/download/1/9/1/1911A849-415F-47DC-B0C1-F210D465C4C8/LicenseTerms.docx</licenseUrl>
+    <projectUrl>http://msdn.microsoft.com/en-us/dynamics/crm/jj937218.aspx</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>This package contains the official Microsoft.Xrm.Client.dll and Microsoft.Xrm.Portal assemblies, the CrmSvcUtil tool, and the WebsiteCopy tool. This package has been authored by the Microsoft Dynamics CRM SDK team.
+
+The tools can be found in the bin\tools folder of the project.</description>
+    <summary>Assemblies required to create client appllications using developer extensions, and build a web portal.</summary>
+    <releaseNotes>This package contains assemblies from the Microsoft Dynamics CRM 2013 Update Rollup 1 (UR1) release.</releaseNotes>
+    <copyright>© 2013 Microsoft Corporation</copyright>
+    <language>en-US</language>
+    <tags>Dynamics CRM 2013 SDK XRM</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="WindowsAzure.ServiceBus" version="2.1.2.0" />
+        <dependency id="Microsoft.CrmSdk.CoreAssemblies" version="6.0.2" />
+        <dependency id="Microsoft.CrmSdk.Deployment" version="6.0.2" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="PresentationFramework" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Configuration" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Data.Services" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Runtime.Caching" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="WindowsBase" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="PresentationCore" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Security" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Data" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Data.Services.Client" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Web.Extensions" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Design" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.ServiceModel.Activation" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Web.ApplicationServices" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Drawing" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Web.Services" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.ServiceModel.Web" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Web" targetFramework=".NETFramework4.0" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

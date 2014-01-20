@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
@@ -46,16 +47,15 @@ namespace CrmUp
             var args = new CreateOrganisationArgs();
             args.Organisation = new Microsoft.Xrm.Sdk.Deployment.Organization
                 {
-                    BaseCurrencyCode = "GPB",
-                    BaseCurrencyName = "Pound Sterling",
+                    BaseCurrencyCode = RegionInfo.CurrentRegion.ISOCurrencySymbol,
+                    BaseCurrencyName = RegionInfo.CurrentRegion.CurrencyNativeName,
                     BaseCurrencyPrecision = 2,
-                    BaseCurrencySymbol = "£",
+                    BaseCurrencySymbol = RegionInfo.CurrentRegion.CurrencySymbol,
                     BaseLanguageCode = 1033,
                     FriendlyName = "CrmUpTest",
                     UniqueName = "CrmUpTest",
                     SqlCollation = "Latin1_General_CI_AI",
                     SqlServerName = "VM-PRODDEV-SQL",
-                    SrsUrl = "http://VM-PRODDEV-SQL/reportserver",
                     SqmIsEnabled = false
                 };
             args.SystemAdmingUser = ConfigurationManager.AppSettings["CrmSystemAdminUserAccount"];

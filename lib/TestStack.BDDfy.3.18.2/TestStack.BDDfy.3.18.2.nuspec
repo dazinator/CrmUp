@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>TestStack.BDDfy</id>
+    <version>3.18.2</version>
+    <title>TestStack.BDDfy</title>
+    <authors>Mehdi Khalili,  Michael Whelan</authors>
+    <owners>Mehdi Khalili,  Michael Whelan</owners>
+    <licenseUrl>https://github.com/TestStack/TestStack.BDDfy/blob/master/license.txt</licenseUrl>
+    <projectUrl>https://github.com/TestStack/TestStack.BDDfy</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>BDDfy is the simplest BDD framework to use and extend</description>
+    <tags>BDD testing</tags>
+  </metadata>
+</package>

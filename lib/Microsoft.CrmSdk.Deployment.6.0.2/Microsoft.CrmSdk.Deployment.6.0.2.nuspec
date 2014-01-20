@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.CrmSdk.Deployment</id>
+    <version>6.0.2</version>
+    <title>Microsoft Dynamics CRM 2013 SDK deployment assembly</title>
+    <authors>crmsdk</authors>
+    <owners>crmsdk</owners>
+    <licenseUrl>http://download.microsoft.com/download/1/9/1/1911A849-415F-47DC-B0C1-F210D465C4C8/LicenseTerms.docx</licenseUrl>
+    <projectUrl>http://msdn.microsoft.com/en-us/dynamics/crm/jj937218.aspx</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>This package contains the official Microsoft.Xrm.Sdk.Deployment.dll assembly and has been authored by the Microsoft Dynamics CRM SDK team.</description>
+    <summary>Assembly required to develop managed code applications that can access the Microsoft Dynamics CRM deployment web service.</summary>
+    <releaseNotes>This package contains assemblies from the Microsoft Dynamics CRM 2013 Update Rollup 1 (UR1) release.</releaseNotes>
+    <copyright>© 2013 Microsoft Corporation</copyright>
+    <language>en-US</language>
+    <tags>Dynamics CRM 2013 SDK XRM</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="Microsoft.CrmSdk.CoreAssemblies" version="6.0.2" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Web.Services" targetFramework=".NETFramework4.0" />
+    </frameworkAssemblies>
+  </metadata>
+</package>
