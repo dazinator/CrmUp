@@ -52,10 +52,11 @@ namespace CrmUp
                     BaseCurrencyPrecision = 2,
                     BaseCurrencySymbol = RegionInfo.CurrentRegion.CurrencySymbol,
                     BaseLanguageCode = 1033,
-                    FriendlyName = "CrmUpTest",
-                    UniqueName = "CrmUpTest",
+                    FriendlyName = ConfigurationManager.AppSettings["CrmOrganisationName"],
+                    UniqueName = ConfigurationManager.AppSettings["CrmOrganisationName"],
                     SqlCollation = "Latin1_General_CI_AI",
-                    SqlServerName = "VM-PRODDEV-SQL",
+                    SqlServerName = ConfigurationManager.AppSettings["CrmSqlServer"],
+                    SrsUrl = ConfigurationManager.AppSettings["CrmSSRSServer"],
                     SqmIsEnabled = false
                 };
             args.SystemAdmingUser = ConfigurationManager.AppSettings["CrmSystemAdminUserAccount"];
