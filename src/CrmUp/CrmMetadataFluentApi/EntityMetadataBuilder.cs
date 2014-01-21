@@ -19,7 +19,8 @@ namespace CrmUp
                     LogicalName = entityName.ToLower(),
                     SchemaName = entityName,
                     IsActivity = false,
-                    IsActivityParty = false
+                    IsActivityParty = false,
+                    OwnershipType =  OwnershipTypes.UserOwned
                 };
 
             AttributeBuilder = new EntityAttributeBuilder(this);

@@ -9,6 +9,7 @@ using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Deployment;
 using Microsoft.Xrm.Sdk.Discovery;
+using OrganizationState = Microsoft.Xrm.Sdk.Deployment.OrganizationState;
 
 namespace CrmUp
 {
@@ -19,7 +20,7 @@ namespace CrmUp
         public CrmOrganisationManager(ICrmServiceProvider crmConnectionProvider)
         {
             _crmServiceProvider = crmConnectionProvider;
-          
+
         }
 
         public IEnumerable<OrganizationDetail> GetOrganisations()
@@ -92,17 +93,26 @@ namespace CrmUp
                     upgradeLog.WriteInformation("Retrieving state of the organization...");
 
                     // Retrieve and check the Organization State until is enabled
+                    RetrieveResponse resp = null;
                     do
                     {
-                        var retrieveRespServer = (RetrieveResponse)service.Execute(retrieveReqServer);
-                      //  orgId = ((Microsoft.Xrm.Sdk.Deployment.Organization)retrieveRespServer.Entity).Id;
-                        orgState = ((Organization)retrieveRespServer.Entity).State;
-
+                        resp = (RetrieveResponse)service.Execute(retrieveReqServer);
+                        //  orgId = ((Microsoft.Xrm.Sdk.Deployment.Organization)retrieveRespServer.Entity).Id;
+                        orgState = ((Organization)resp.Entity).State;
                         // Wait 5 secs to not overload server
                         Thread.Sleep(5000);
                     }
-                    while (orgState != Microsoft.Xrm.Sdk.Deployment.OrganizationState.Enabled);
-                    upgradeLog.WriteInformation("Organization has been created!");
+                    while (orgState != OrganizationState.Enabled && orgState != OrganizationState.Failed);
+                    if (orgState == OrganizationState.Enabled)
+                    {
+                        upgradeLog.WriteInformation("Organization has been created!");
+                    }
+                    else
+                    {
+                        upgradeLog.WriteInformation("The organization create operation failed.!");
+                        throw new Exception("The organization create operation failed.!");
+                    }
+
                 }
             }
             catch (FaultException<OrganizationServiceFault> ex)
