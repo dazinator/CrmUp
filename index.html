@@ -11,12 +11,6 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <title>Crmup: Continuos Delivery for Dynamics Crm Customisations</title>
-    <style type="text/css">
-        .auto-style1
-        {
-            font-weight: bold;
-        }
-    </style>
 </head>
 
 <body>
@@ -25,30 +19,23 @@
 
             <header>
                 <h1>CrmUp</h1>
-                <h2>CrmUp is a .NET library that helps you to automate the continuos deployment of customisations to Microsoft Dynamics Crm.</h2>
-                <h2>&nbsp;CrmUp uses a "change script" approach, which means it will apply only the appropriate changes that are required in order to roll the target CRM system up to the correct version. The "change scripts" are provided by you, in the form of "Dynamics Solution" files.
-                   </h2>
-                <h2>CrmUp will enable you to reach that DevOps nirvana referred to as &quot;<strong></strong>Continuous Delivery&quot;. </h2>
-                <h2>At the heart of CrmUp lies the popular <a href="http://dbup.github.io/">DbUp </a>library, and CrmUp extends <a href="http://dbup.github.io/">DbUp </a>in order to bring the same philosophy to the realm of Microsoft Dynamics Crm. </h2>
+                <h2>CrmUp is a .NET library that will help you to very easily automate the deployment of your Dynamics Crm customisations.</h2>
+                <h2>CrmUp uses a "change script" approach, which means it will apply only the appropriate customisations that are required in order to roll the target CRM system up to the current version. 
+                    The "change scripts" are provided by you, in the form of "Dynamics Solution" files.
+                </h2>
+                <h2>CrmUp wants to take you to that special DevOps nirvana referred to as &quot;<strong></strong>Continuous Delivery&quot;. </h2>
+                <h2>At the heart of CrmUp lies the popular <a href="http://dbup.github.io/">DbUp </a>library, and CrmUp extends <a href="http://dbup.github.io/">DbUp </a>in order to bring <a href="http://dbup.github.io/">DbUp's </a>philosophy to the realm of Microsoft Dynamics Crm.</h2>
+                <small>The documentation that follows has been made consistent with <a href="http://dbup.github.io/">DbUp's</a>.</small>
             </header>
-
             <section id="downloads" class="clearfix">
                 <a href="https://github.com/dazinator/CrmUp/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
                 <a href="https://github.com/dazinator/CrmUp/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
                 <a href="https://github.com/dazinator/CrmUp" id="view-on-github" class="button"><span>View on GitHub</span></a>
             </section>
-
             <hr>
-
-             <p><b>The documentation that follows has been made consistent with </b> <a href="http://dbup.github.io/" class="auto-style1">DbUp's</a>.</p> 
-
             <section id="main_content">
                 <article>
-                    <h3></h3>
-                  
-
                     <h3>Getting Started</h3>
-
 
                     <p>Start by creating a simple C# console project in Visual Studio, and adding your Crm Solution files to it. From the properties window, mark them as Embedded Resources:</p>
 
@@ -61,7 +48,7 @@
                     <p>Finally, in <code>Program.cs</code>, add the following code:</p>
 
                     <pre><code>
-static int Main(string[] args)
+        static int Main(string[] args)
         {
             var connectionString = args.FirstOrDefault() 
                 ?? "Url=http://crmurl:5555/orgname;Domain=domain; UserName=admin; Password=pasword;Timeout=00:10:00;";
@@ -110,9 +97,9 @@ static int Main(string[] args)
                     </p>
                     <img src="images/schema-versions.png" alt="The Journal created by CrmUp">
 
-                     <h2>Extensibility</h2>
-                     <p>
-                        CrmUp is just an extension for <a href="http://dbup.github.io/">DbUp </a>, please refer to <a href="http://dbup.github.io/">DbUp's </a> documentation if you have question regarding extensibility. 
+                    <h2>Extensibility</h2>
+                    <p>
+                        CrmUp is just an extension for <a href="http://dbup.github.io/">DbUp </a>, please refer to <a href="http://dbup.github.io/">DbUp's </a>documentation if you have question regarding extensibility. 
                     </p>
                 </article>
             </section>
