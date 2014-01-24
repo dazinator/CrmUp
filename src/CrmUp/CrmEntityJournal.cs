@@ -182,7 +182,7 @@ namespace CrmUp
                             foreach (var attributeMetadata in attributesMetadata)
                             {
                                 // Create the request.
-                                if (attributeMetadata.LogicalName != "crmup_scriptname")
+                                if (attributeMetadata.SchemaName.ToLower() != "crmup_scriptname")
                                 {
                                     var createAttributeRequest = new CreateAttributeRequest
                                     {
