@@ -3,8 +3,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DbUp Contributors")]
-[assembly: AssemblyProduct("DbUp")]
-[assembly: AssemblyCopyright("Copyright © DbUp Contributors 2010")]
+[assembly: AssemblyCompany("CrmUp Contributors: Darrell Tunnell")]
+[assembly: AssemblyProduct("CrmUp")]
+[assembly: AssemblyCopyright("Copyright © CrmUp Contributors 2014")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
