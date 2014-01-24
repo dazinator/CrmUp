@@ -78,7 +78,7 @@ namespace CrmUp
                     }
                 }
 
-                log.WriteInformation("Fetching list of already executed scripts.");
+              //  log.WriteInformation("Fetching list of already executed scripts.");
                 var scripts = new List<string>();
 
                 // check to see if org exists if necessary.
@@ -134,12 +134,12 @@ namespace CrmUp
         public void EnsureJournalEnityExists()
         {
             // Check Crm metadata to see if entity exists.
-            _LogFactory().WriteInformation("Ensuring Crm has Journal Entity..");
+           // _LogFactory().WriteInformation("Ensuring Crm has Journal Entity..");
             bool exists = DoesJournalEntityExist();
             if (!exists)
             {
 
-                _LogFactory().WriteInformation("Creating journal entity in Crm..");
+              //  _LogFactory().WriteInformation("Creating journal entity in Crm..");
                 var journalEntityBuilder = EntityConstruction.ConstructEntity(JournalEntityName)
                                                              .DisplayName("Crm Up Journal Entry")
                                                              .Description(
@@ -177,7 +177,7 @@ namespace CrmUp
                         {
                             a().Execute(createrequest);
 
-                            _LogFactory().WriteInformation("Journal entity created, adding attributes..");
+                            //_LogFactory().WriteInformation("Journal entity created, adding attributes..");
                             // Now add in attributes as Crm doesnt let us do this in one go.
                             foreach (var attributeMetadata in attributesMetadata)
                             {
@@ -195,7 +195,7 @@ namespace CrmUp
                                 }
                                
                             }
-                            _LogFactory().WriteInformation("Journal entity attributes added..");
+                           // _LogFactory().WriteInformation("Journal entity attributes added..");
                         });
                 }
                 catch (Exception ex)
