@@ -38,27 +38,27 @@
 
             <h3>Brief Introduction</h3>
             <p>CrmUp can help to enable you and your Microsoft Dynamics Crm projects to reach that special DevOps nirvana known as &quot;Continuous Delivery Land&quot;.</p>
-            <br />
+                <br />
             <p>
                 CrmUp uses a <em><strong>change script</strong></em> approach, which means it will apply only the necessary <em><strong>change scripts</strong></em> that are required in order to roll the target Dynamics CRM Organisation up to the current version. 
                     The <strong><em>change scripts</em></strong> are provided by you, in the form of &quot;Dynamics Crm Solution&quot; files. Solution files should be familiar to anyone who works with customising Dynamics Crm, and they effectively contain the customisations that will be applied.
             </p>
-            <br />
+                <br />
             <p>At the heart of CrmUp lies <a href="http://dbup.github.io/">DbUp</a>, and CrmUp is an extension for <a href="http://dbup.github.io/">DbUp </a>that brings <a href="http://dbup.github.io/">DbUp's </a>philosophy to the realm of Microsoft Dynamics Crm.</p>
-            <br />          
+                <br />
 
-            <h3>Getting Started</h3>
-            <p>Start by creating a simple C# console project in Visual Studio, and adding your Crm Solution files to it. From the properties window, mark them as Embedded Resources:</p>
+                    <h3>Getting Started</h3>
+                    <p>Start by creating a simple C# console project in Visual Studio, and adding your Crm Solution files to it. From the properties window, mark them as Embedded Resources:</p>
 
-            <img src="images/add-solutions.png" alt="CrmUp Sample">
+                    <img src="images/add-solutions.png" alt="CrmUp Sample">
 
-            <p>Next, use NuGet to install the CrmUp package:</p>
+                    <p>Next, use NuGet to install the CrmUp package:</p>
 
-            <pre><code>Install-Package CrmUp</code></pre>
+                    <pre><code>Install-Package CrmUp</code></pre>
 
-            <p>Finally, in <code>Program.cs</code>, add the following code:</p>
+                    <p>Finally, in <code>Program.cs</code>, add the following code:</p>
 
-            <pre><code>
+                     <pre><code>
         static int Main(string[] args)
         {
             var connectionString = args.FirstOrDefault() 
@@ -90,47 +90,47 @@
 }
 </code></pre>
 
-            <p>You now have a console application that can apply your Crm Solution files to a Dynamics Crm system in order to roll it up to the latest version! After running it, you'll see something like this:</p>
+                    <p>You now have a console application that can apply your Crm Solution files to a Dynamics Crm system in order to roll it up to the latest version! After running it, you'll see something like this:</p>
 
-            <img src="images/scripts-ran.png" alt="First run - the scripts get executed">
+                    <img src="images/scripts-ran.png" alt="First run - the scripts get executed">
 
-            <p>The next time you run it, you'll see:</p>
+                    <p>The next time you run it, you'll see:</p>
 
-            <img src="images/scripts-noneran.png" alt="Second run - the scripts have already been executed">
+                    <img src="images/scripts-noneran.png" alt="Second run - the scripts have already been executed">
 
-            <h2>Why a console application?</h2>
-            <p>
-                For many reasons, all of which are mentioned over on <a href="http://dbup.github.io/">DbUp's documentation </a>: 
-            </p>
-            <h2>Journaling</h2>
-            <p>
-                CrmUp creates a new entity in Crm, called "CrmUp Journal", and this is used to track the change scripts 
+                    <h2>Why a console application?</h2>
+                    <p>
+                        For many reasons, all of which are mentioned over on <a href="http://dbup.github.io/">DbUp's documentation </a>: 
+                    </p>
+                    <h2>Journaling</h2>
+                    <p>
+                        CrmUp creates a new entity in Crm, called "CrmUp Journal", and this is used to track the change scripts 
                         (Solution Files) that have been applied to the system. Before running, CrmUp checks the Journal records to work out which change scripts (Solution Files) can be skipped. After applying a change script (Solution File), an appropriate journal record is created to record the change that has been applied.
-            </p>
-            <img src="images/schema-versions.png" alt="The Journal created by CrmUp">
-            <h2>Resources</h2>
-            <p>
-                For information relating to DbUp please go to <a href="http://dbup.github.io/">DbUp</a>.
+                    </p>
+                    <img src="images/schema-versions.png" alt="The Journal created by CrmUp">
+                    <h2>Resources</h2>
+                    <p>
+                        For information relating to DbUp please go to <a href="http://dbup.github.io/">DbUp</a>.
                         The source code for CrmUp is all on <a href="https://github.com/dazinator/CrmUp">GitHub</a>. Any issues can also be raised there.
                         CrmUp is licenced via the MIT licence (open source).
-            </p>
-            <p>Alternatively you can download the source code directly:</p>
-            <section id="downloads" class="clearfix">
-                <a href="https://github.com/dazinator/CrmUp/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-                <a href="https://github.com/dazinator/CrmUp/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-                <a href="https://github.com/dazinator/CrmUp" id="view-on-github" class="button"><span>View on GitHub</span></a>
+                    </p>
+                    <p>Alternatively you can download the source code directly:</p>
+                    <section id="downloads" class="clearfix">
+                        <a href="https://github.com/dazinator/CrmUp/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+                        <a href="https://github.com/dazinator/CrmUp/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+                        <a href="https://github.com/dazinator/CrmUp" id="view-on-github" class="button"><span>View on GitHub</span></a>
+                    </section>
+
+
             </section>
-
-
-        </section>
     </div>
 
-    <!-- FOOTER  -->
+     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
-        <footer class="inner">
-            <p class="copyright">CrmUp is maintained by <a href="https://github.com/dazinator">Darrell Tunnell</a></p>
-            <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-        </footer>
+      <footer class="inner">
+        <p class="copyright">CrmUp is maintained by <a href="https://github.com/dazinator">Darrell Tunnell</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+            </footer>
     </div>
 </body>
 </html>
