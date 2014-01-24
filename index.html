@@ -11,6 +11,12 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <title>Crmup: Continuos Delivery for Dynamics Crm Customisations</title>
+    <style type="text/css">
+        .auto-style1
+        {
+            font-size: small;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,13 +25,20 @@
 
             <header>
                 <h1>CrmUp</h1>
-                <h2>CrmUp is a .NET library that will help you to very easily automate the deployment of your Dynamics Crm customisations.</h2>
-                <h2>CrmUp uses a "change script" approach, which means it will apply only the appropriate customisations that are required in order to roll the target CRM system up to the current version. 
-                    The "change scripts" are provided by you, in the form of "Dynamics Solution" files.
-                </h2>
-                <h2>CrmUp wants to take you to that special DevOps nirvana referred to as &quot;<strong></strong>Continuous Delivery&quot;. </h2>
+                 <br />
+                <h2>CrmUp is a .NET library that will help you to automate the deployment of your Microsoft Dynamics Crm customisations.</h2>
+                <br />
+                <h2>CrmUp wants to take you to that special DevOps nirvana referred to as &quot;Continuous Delivery&quot;. </h2>
+                <br />
+                <h2>CrmUp uses a <em><strong>change script</strong></em> approach, which means it will apply only the necessary <em><strong>change scripts</strong></em> that are required in order to roll the target Dynamics CRM Organisation up to the current version. 
+                    The <strong><em>change scripts</em></strong> are provided by you, in the form of "Dynamics Crm Solution&quot; files. </h2>
+                 <br />
                 <h2>At the heart of CrmUp lies the popular <a href="http://dbup.github.io/">DbUp </a>library, and CrmUp extends <a href="http://dbup.github.io/">DbUp </a>in order to bring <a href="http://dbup.github.io/">DbUp's </a>philosophy to the realm of Microsoft Dynamics Crm.</h2>
-                <small>The documentation that follows has been made consistent with <a href="http://dbup.github.io/">DbUp's</a>.</small>
+                 <br />
+                 <span class="auto-style1">
+                 <small><strong>The documentation that follows has been made consistent with </strong></small>
+                </span>
+                 <small> <a href="http://dbup.github.io/" class="auto-style1"><strong>DbUp's</strong></a></small><span class="auto-style1"><small><strong>.</strong></small></span>
             </header>
             <section id="downloads" class="clearfix">
                 <a href="https://github.com/dazinator/CrmUp/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
@@ -51,7 +64,7 @@
         static int Main(string[] args)
         {
             var connectionString = args.FirstOrDefault() 
-                ?? "Url=http://crmurl:5555/orgname;Domain=domain; UserName=admin; Password=pasword;Timeout=00:10:00;";
+                ?? "Url=http://crmurl:5555/orgname;Domain=domain; UserName=admin; Password=pasword;Timeout=00:15:00;";
             var upgrader =
                DeployChanges.To
                             .DynamicsCrmOrganisation(connectionString)
@@ -93,13 +106,14 @@
 
                     <h2>Journaling</h2>
                     <p>
-                        By default, CrmUp creates a new entity in Crm, called "CrmUp Journal", and this is used to track the solutions / change scripts that have already been applied to the system. Before running, CrmUp checks these records to work out which solutions / change scripts should be skipped. After running, it inserts records into the journal to record the solutions / change scripts that have been applied.
+                        By default, CrmUp creates a new entity in Crm, called "CrmUp Journal", and this is used to track the change scripts 
+                        (Solution Files) that have been applied to the system. Before running, CrmUp checks the Journal records to work out which change scripts should be skipped. After applying a change script (Solution File), it inserts an appropriate record into the journal to record the change script that was applied.
                     </p>
                     <img src="images/schema-versions.png" alt="The Journal created by CrmUp">
 
                     <h2>Extensibility</h2>
                     <p>
-                        CrmUp is just an extension for <a href="http://dbup.github.io/">DbUp </a>, please refer to <a href="http://dbup.github.io/">DbUp's </a>documentation if you have question regarding extensibility. 
+                        CrmUp is itself an extension for <a href="http://dbup.github.io/">DbUp</a>, and DbUp is obviously extensible. Refer to <a href="http://dbup.github.io/">DbUp's </a>documentation if you have question regarding extensibility. 
                     </p>
                 </article>
             </section>
@@ -108,7 +122,7 @@
                 CrmUp is maintained by <a href="https://github.com/dazinator">dazinator</a><br>
                 This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
             </footer>
-
+            <a href="https://github.com/dazinator/CrmUp"><img style="position: absolute; top: 0; right: 0; border: 0; padding: 0" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 
         </div>
     </div>
