@@ -7,6 +7,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrmUp.Tests", "CrmUp.Tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrmUp.Console", "CrmUp.Console\CrmUp.Console.csproj", "{ED5553BD-93ED-473A-BB53-DCFF9EE1201C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{C615BB1A-EEF3-420F-A738-2B143B9A5F8A}"
+	ProjectSection(SolutionItems) = preProject
+		PushNugetPackage.targets = PushNugetPackage.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6602B8DA-AADD-48A2-BC29-913E686EAB81}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
