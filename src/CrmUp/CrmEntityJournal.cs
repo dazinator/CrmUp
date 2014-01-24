@@ -182,14 +182,18 @@ namespace CrmUp
                             foreach (var attributeMetadata in attributesMetadata)
                             {
                                 // Create the request.
-                                var createAttributeRequest = new CreateAttributeRequest
+                                if (attributeMetadata.LogicalName != "crmup_scriptname")
+                                {
+                                    var createAttributeRequest = new CreateAttributeRequest
                                     {
                                         EntityName = entityMetadata.LogicalName,
                                         Attribute = attributeMetadata
                                     };
 
-                                // Execute the request.
-                                a().Execute(createAttributeRequest);
+                                    // Execute the request.
+                                    a().Execute(createAttributeRequest);
+                                }
+                               
                             }
                             _LogFactory().WriteInformation("Journal entity attributes added..");
                         });
