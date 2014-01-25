@@ -5,6 +5,9 @@ using Microsoft.Xrm.Sdk.Discovery;
 
 namespace CrmUp
 {
+    /// <summary>
+    /// Classes that supply instances of Crm services will implement this interface.
+    /// </summary>
     public interface ICrmServiceProvider
     {
         IOrganizationService GetOrganisationService();
@@ -21,6 +24,9 @@ namespace CrmUp
         /// <returns></returns>
         IOrganizationService GetOrganisationService(OrganizationDetail org, string domain, string userName, string password);
 
+        /// <summary>
+        /// The connection provider used to obtain connection information for services.
+        /// </summary>
         ICrmConnectionProvider ConnectionProvider { get; }
 
     }

@@ -13,6 +13,9 @@ using OrganizationState = Microsoft.Xrm.Sdk.Deployment.OrganizationState;
 
 namespace CrmUp
 {
+    /// <summary>
+    /// Single Responsibility: To provide management functions for Crm organisations, such as Creation, and Retreival.
+    /// </summary>
     public class CrmOrganisationManager : ICrmOrganisationManager
     {
         private ICrmServiceProvider _crmServiceProvider;

@@ -3,6 +3,9 @@ using Microsoft.Xrm.Sdk.Metadata;
 
 namespace CrmUp
 {
+    /// <summary>
+    /// Single responsbility: To provide a fluent API for constructing Crm Entity Metadata.
+    /// </summary>
     public class EntityMetadataBuilder
     {
 

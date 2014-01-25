@@ -9,7 +9,7 @@ using DbUp.ScriptProviders;
 namespace CrmUp
 {
     /// <summary>
-    /// The default <see cref="IScriptProvider"/> implementation which retrieves upgrade scripts embedded in an assembly.
+    /// An <see cref="IScriptProvider"/> implementation which retrieves solution files embedded in an assembly.
     /// </summary>
     public class EmbeddedCrmSolutionScriptProvider : IScriptProvider
     {

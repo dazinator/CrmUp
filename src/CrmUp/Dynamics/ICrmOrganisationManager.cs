@@ -10,7 +10,7 @@ using Microsoft.Xrm.Sdk.Discovery;
 namespace CrmUp
 {
     /// <summary>
-    /// An interface for performing Organization management operations in Dynamics Crm.
+    /// An interface for defining the Organization management operations.
     /// </summary>
     public interface ICrmOrganisationManager
     {

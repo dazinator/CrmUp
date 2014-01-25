@@ -11,10 +11,10 @@ using Microsoft.Xrm.Sdk.Query;
 namespace CrmUp
 {
     /// <summary>
-    /// An implementation of the <see cref="IJournal"/> interface which tracks version numbers for a 
-    /// Dynamics Crm Organisation by querying the solutions entity in CRM.
+    /// An implementation of the <see cref="IJournal"/> interface which tracks solution files that have been applied 
+    /// by querying the solutions entity in CRM.
     /// </summary>
-    [Obsolete("Should use the CrmEntityJournal instead, which uses a dedicated customisable entity in Crm as opposed to solution records which are non customisable.")]
+    [Obsolete("Should use the CrmEntityJournal instead, which uses a dedicated customisable entity in Crm as opposed to solution entity, as solution entity is a system entity which is non customisable.")]
     public class CrmSolutionJournal : IJournal
     {
         // private readonly string schemaTableName;

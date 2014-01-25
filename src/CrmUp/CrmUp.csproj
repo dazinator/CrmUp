@@ -109,30 +109,32 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="CreateOrganisationArgs.cs" />
-    <Compile Include="CrmConnectivity\AppSettingsConnectionStringProvider.cs" />
+    <Compile Include="Dynamics\AppSettingsConnectionStringProvider.cs" />
     <Compile Include="CrmConnectionManager.cs" />
-    <Compile Include="CrmConnectivity\CrmClientCredentialsProvider.cs" />
-    <Compile Include="CrmConnectivity\ExplicitConnectionStringProviderWithFallbackToConfig.cs" />
-    <Compile Include="CrmConnectivity\ICrmClientCredentialsProvider.cs" />
+    <Compile Include="Dynamics\CrmClientCredentialsProvider.cs" />
+    <Compile Include="Dynamics\ExplicitConnectionStringProviderWithFallbackToConfig.cs" />
+    <Compile Include="Dynamics\ICrmClientCredentialsProvider.cs" />
     <Compile Include="CrmEntityJournal.cs" />
-    <Compile Include="CrmManagement\CrmOrganisationManager.cs" />
-    <Compile Include="CrmManagement\ICrmOrganisationManager.cs" />
-    <Compile Include="CrmConnectivity\ICrmServiceProvider.cs" />
-    <Compile Include="CrmConnectivity\CrmConnectionProvider.cs" />
-    <Compile Include="CrmSolutionFile.cs" />
+    <Compile Include="Dynamics\CrmOrganisationManager.cs" />
+    <Compile Include="Dynamics\ICrmOrganisationManager.cs" />
+    <Compile Include="Dynamics\ICrmServiceProvider.cs" />
+    <Compile Include="Dynamics\CrmConnectionProvider.cs" />
+    <Compile Include="DynamicsUpgradeEngineBuilder.cs" />
+    <Compile Include="Scripts\CrmSolutionFile.cs" />
     <Compile Include="CrmSolutionJournal.cs" />
     <Compile Include="CrmSolutionScriptExecutor.cs" />
     <Compile Include="CrmUpExtensions.cs" />
     <Compile Include="EmbeddedCrmSolutionScriptProvider.cs" />
-    <Compile Include="CrmConnectivity\FailedToConnectToCrmException.cs" />
-    <Compile Include="CrmMetadataFluentApi\EntityConstruction.cs" />
-    <Compile Include="CrmMetadataFluentApi\EntityMetadataBuilder.cs" />
-    <Compile Include="CrmMetadataFluentApi\EntityAttributeBuilder.cs" />
-    <Compile Include="EntityUtils.cs" />
+    <Compile Include="Dynamics\FailedToConnectToCrmException.cs" />
+    <Compile Include="Dynamics\EntityConstruction.cs" />
+    <Compile Include="Dynamics\EntityMetadataBuilder.cs" />
+    <Compile Include="Dynamics\EntityAttributeBuilder.cs" />
+    <Compile Include="Dynamics\EntityUtils.cs" />
     <Compile Include="Guard.cs" />
-    <Compile Include="CrmConnectivity\ICrmConnectionProvider.cs" />
-    <Compile Include="OrganisationDoesNotExistException.cs" />
-    <Compile Include="CrmConnectivity\CrmServiceProvider.cs" />
+    <Compile Include="Dynamics\ICrmConnectionProvider.cs" />
+    <Compile Include="ISupportOrgCreation.cs" />
+    <Compile Include="Dynamics\OrganisationDoesNotExistException.cs" />
+    <Compile Include="Dynamics\CrmServiceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

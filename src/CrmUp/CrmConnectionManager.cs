@@ -9,12 +9,14 @@ using Microsoft.Xrm.Sdk.Discovery;
 
 namespace CrmUp
 {
+    /// <summary>
+    /// Single responsbility: To implement and extend IConnectionManager which is required for DbUp, but extened with Crm specific connection capabilites.
+    /// </summary>
     public class CrmConnectionManager : IConnectionManager
     {
         private ICrmServiceProvider _CrmServiceProvider = null;
         private IOrganizationService _organizationService = null;
        
-      
 
         private bool errorOccured = false;
 
@@ -22,7 +24,6 @@ namespace CrmUp
         {
             _CrmServiceProvider = crmServiceProvider;
         }
-    
 
         public IDisposable OperationStarting(IUpgradeLog upgradeLog, List<SqlScript> executedScripts)
         {

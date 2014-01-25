@@ -4,6 +4,9 @@ using Microsoft.Xrm.Sdk.Metadata;
 
 namespace CrmUp
 {
+    /// <summary>
+    /// Single responsbility: To provide a fluent API for constructing attribute metadata for an entity.
+    /// </summary>
     public class EntityAttributeBuilder
     {
         public EntityMetadataBuilder MetaDataBuilder { get; set; }
@@ -34,7 +37,6 @@ namespace CrmUp
             this.Attributes.Add(newAtt);
             return this;
         }
-
 
         public EntityAttributeBuilder BooleanAttribute(string schemaName,
                                                                  AttributeRequiredLevel requiredLevel,
@@ -80,7 +82,6 @@ namespace CrmUp
             this.Attributes.Add(dtAttribute);
             return this;
         }
-
 
     }
 }

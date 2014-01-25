@@ -4,6 +4,9 @@ using Microsoft.Xrm.Client;
 
 namespace CrmUp
 {
+    /// <summary>
+    /// Single Responsibility: This class provides "CrmConnnections" and uses the AppConfig file to provide such connections. 
+    /// </summary>
     public abstract class AppSettingsConnectionStringProvider : CrmConnectionProvider
     {
         public const string DeploymentConnectionStringKey = "CrmDeploymentServiceConnectionString";

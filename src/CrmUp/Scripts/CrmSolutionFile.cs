@@ -9,6 +9,9 @@ using DbUp.Engine;
 
 namespace CrmUp
 {
+    /// <summary>
+    /// Single responsbility: Extends the DbUp concept of a "SqlScript" to be a Dynamics Crm Solution File.
+    /// </summary>
     public class CrmSolutionFile : SqlScript
     {
 
@@ -104,7 +107,6 @@ namespace CrmUp
         }
 
         public Byte[] FileBytes { get; set; }
-
 
     }
 }

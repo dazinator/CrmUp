@@ -11,6 +11,12 @@ using Microsoft.Xrm.Sdk.Discovery;
 
 namespace CrmUp
 {
+
+    /// <summary>
+    /// Single Responsibility: The responsibility of this class is to provide instances of CRM services when they are needed.
+    /// Dependencies: This class depends upon an ICrmConnectionProvider to obtain Connection information for services, and 
+    /// ICrmClientCredentialsProvider to obtain client credentials used service authentication.
+    /// </summary>
     public class CrmServiceProvider : ICrmServiceProvider
     {
 
@@ -76,11 +82,6 @@ namespace CrmUp
 
         }
 
-        public ICrmConnectionProvider ConnectionProvider
-        {
-            get { return _CrmConnectionProvider; }
-        }
-
         public IDeploymentService GetDeploymentService()
         {
             CrmConnection connection = null;
@@ -119,6 +120,13 @@ namespace CrmUp
                 throw new FailedToConnectToCrmException(connection, ex);
             }
         }
+
+        public ICrmConnectionProvider ConnectionProvider
+        {
+            get { return _CrmConnectionProvider; }
+        }
+
+       
 
     }
 }

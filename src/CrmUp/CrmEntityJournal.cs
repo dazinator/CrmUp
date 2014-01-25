@@ -12,12 +12,11 @@ using Microsoft.Xrm.Sdk.Query;
 
 namespace CrmUp
 {
-
-    public interface ISupportOrgCreation
-    {
-        Func<CreateOrganisationArgs> EnsureOrganisationExists { get; set; }
-
-    }
+ 
+    /// <summary>
+    /// An implementation of the <see cref="IJournal"/> interface which uses an Entity in Crm to track scripts that have been applied.
+    /// This class can also ensure a Crm Organisation is created prior to first use of the journal, if the EnsureOrganisationExists delegate is set.
+    /// </summary>
     public class CrmEntityJournal : IJournal, ISupportOrgCreation
     {
 

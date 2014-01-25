@@ -10,6 +10,10 @@ using Microsoft.Xrm.Sdk;
 
 namespace CrmUp
 {
+
+    /// <summary>
+    /// An implementation of the <see cref="IScriptExecutor"/> interface which used to apply solution imports into Crm.
+    /// </summary>
     public class CrmSolutionScriptExecutor : IScriptExecutor
     {
 
@@ -26,20 +30,19 @@ namespace CrmUp
             _ScriptPreProcessors = scriptPreprocessors;
         }
 
+        /// <summary>
+        /// Executes the specified script against the target system.
+        /// </summary>
+        /// <param name="script">The script to apply, this should be an instance of <see cref="IScriptExecutor"/></param>
         public void Execute(SqlScript script)
         {
             Execute(script, null);
-
-
-            // Connect to Crm..
-            // Apply the solution.
-
         }
 
         /// <summary>
-        /// Executes the specified script against a database at a given connection string.
+        /// Executes the specified script against the target system.
         /// </summary>
-        /// <param name="script">The script.</param>
+        /// <param name="script">The script to apply, this should be an instance of <see cref="IScriptExecutor"/></param>
         /// <param name="variables">Variables to replace in the script</param>
         public void Execute(SqlScript script, IDictionary<string, string> variables)
         {
@@ -109,32 +112,18 @@ namespace CrmUp
             }
         }
 
+        /// <summary>
+        /// Having to implement this due to DbUp interfac, but nothing to do.
+        /// </summary>
         public void VerifySchema()
         {
             // nothing to do here.. There is no schema as such for a solution file.
         }
 
+        /// <summary>
+        /// Having to implement this due to DbUp interface, but nothing to do.
+        /// </summary>
         public int? ExecutionTimeoutSeconds { get; set; }
-
-        //protected CrmSolutionFile EnsureIsCrmSolution(SqlScript script)
-        //{
-        //    var crmSolution = script as CrmSolutionFile;
-        //    if (crmSolution == null)
-        //    {
-        //        throw new ArgumentException("script");
-        //    }
-        //    return crmSolution;
-        //}
-
-        //protected CrmConnectionManager EnsureIsCrmConnectionManager(IConnectionManager connectionManager)
-        //{
-        //    var crmSolution = script as CrmSolutionFile;
-        //    if (crmSolution == null)
-        //    {
-        //        throw new ArgumentException("script");
-        //    }
-        //    return crmSolution;
-        //}
 
     
     }

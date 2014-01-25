@@ -2,6 +2,12 @@ using Microsoft.Xrm.Client;
 
 namespace CrmUp
 {
+
+    /// <summary>
+    /// Single Responsibility: This class is responsible for providing "Crm Connnection" information for the Crm services.
+    /// This implementation uses explicitly provided connection string information (properties must be set), or falls back to using the AppConfig if
+    /// no connection information is explicitly provided. 
+    /// </summary>
     public class ExplicitConnectionStringProviderWithFallbackToConfig : AppSettingsConnectionStringProvider
     {
         public string OrganisationServiceConnectionString { get; set; }

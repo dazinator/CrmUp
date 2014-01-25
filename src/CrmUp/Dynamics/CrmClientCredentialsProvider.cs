@@ -4,6 +4,10 @@ using Microsoft.Xrm.Sdk.Client;
 
 namespace CrmUp
 {
+
+    /// <summary>
+    /// Single Responsibility: This class provides the ClientCredentials that are used for Crm web services authentication.
+    /// </summary>
     public class CrmClientCredentialsProvider : ICrmClientCredentialsProvider
     {
         public ClientCredentials GetCredentials(AuthenticationProviderType providerType, string domain, string username, string password)

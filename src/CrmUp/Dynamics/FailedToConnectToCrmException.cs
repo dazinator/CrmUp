@@ -3,6 +3,9 @@ using Microsoft.Xrm.Client;
 
 namespace CrmUp
 {
+    /// <summary>
+    /// Single responsibility: To represent an exception connecting to a Crm service.
+    /// </summary>
     [Serializable()]
     public class FailedToConnectToCrmException : Exception
     {
