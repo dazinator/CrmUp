@@ -102,17 +102,19 @@
                     <p>
                         For many reasons, all of which are mentioned over on <a href="http://dbup.github.io/">DbUp's documentation </a>, but I will list them again here (copied from their site):
                         
-                      <blockquote>By putting your migration scripts in an executable that can be run, you'll get a lot of benefits:
+                        <blockquote cite="http://dbup.github.io/">
+                            By putting your migration scripts in an executable that can be run, you'll get a lot of benefits:
+<ul>
+<li>You can hit F5 at any time to test the migration scripts</li>
+<li>Other developers on your team can do the same</li>
+<li>You can execute them as part of an automated deployment</li>
+<li>You can run it during your integration tests</li>
+<li>Since it's in your VS solution, it will go into source control along with the rest of your code</li>
+<li>Alternatively, instead of a console application, you can create a class library that references DbUp, and embed it into a maintenance screen inside your application.</li>
+    
+</ul>
 
-You can hit F5 at any time to test the migration scripts
-Other developers on your team can do the same
-You can execute them as part of an automated deployment
-You can run it during your integration tests
-Since it's in your VS solution, it will go into source control along with the rest of your code
-Alternatively, instead of a console application, you can create a class library that references DbUp, and embed it into a maintenance screen inside your application.
-
-Check out this blog post to learn more about the philosophy behind DbUp.<blockquote/>
-                        
+                        </blockquote>
                     </p>
                     <h2>Journaling</h2>
                     <p>
@@ -122,7 +124,6 @@ Check out this blog post to learn more about the philosophy behind DbUp.<blockqu
                     <img src="images/schema-versions.png" alt="The Journal created by CrmUp">
                     <h2>Resources</h2>
                     <p>
-                        For information relating to DbUp please go to <a href="http://dbup.github.io/">DbUp</a>.
                         The source code for CrmUp is all on <a href="https://github.com/dazinator/CrmUp">GitHub</a>. Any issues can also be raised there.
                         CrmUp is licenced via the MIT licence (open source).
                     </p>
