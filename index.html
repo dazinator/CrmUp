@@ -100,7 +100,19 @@
 
                     <h2>Why a console application?</h2>
                     <p>
-                        For many reasons, all of which are mentioned over on <a href="http://dbup.github.io/">DbUp's documentation </a>: 
+                        For many reasons, all of which are mentioned over on <a href="http://dbup.github.io/">DbUp's documentation </a>, but I will list them again here (copied from their site):
+                        
+                      <blockquote>By putting your migration scripts in an executable that can be run, you'll get a lot of benefits:
+
+You can hit F5 at any time to test the migration scripts
+Other developers on your team can do the same
+You can execute them as part of an automated deployment
+You can run it during your integration tests
+Since it's in your VS solution, it will go into source control along with the rest of your code
+Alternatively, instead of a console application, you can create a class library that references DbUp, and embed it into a maintenance screen inside your application.
+
+Check out this blog post to learn more about the philosophy behind DbUp.<blockquote/>
+                        
                     </p>
                     <h2>Journaling</h2>
                     <p>
