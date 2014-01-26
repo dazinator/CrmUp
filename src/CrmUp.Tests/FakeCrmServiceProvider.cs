@@ -1,5 +1,6 @@
 using System;
 using CrmUp;
+using CrmUp.Dynamics;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Deployment;
 using Microsoft.Xrm.Sdk.Discovery;

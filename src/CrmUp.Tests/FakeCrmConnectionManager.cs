@@ -1,4 +1,5 @@
 using CrmUp;
+using CrmUp.Dynamics;
 using DbUp.Engine.Output;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Deployment;

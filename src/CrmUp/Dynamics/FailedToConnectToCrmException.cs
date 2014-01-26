@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xrm.Client;
 
-namespace CrmUp
+namespace CrmUp.Dynamics
 {
     /// <summary>
     /// Single responsibility: To represent an exception connecting to a Crm service.

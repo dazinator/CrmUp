@@ -1,7 +1,7 @@
 using System.ServiceModel.Description;
 using Microsoft.Xrm.Sdk.Client;
 
-namespace CrmUp
+namespace CrmUp.Dynamics
 {
     /// <summary>
     /// Classes that supply ClientCredentials for Crm webservice authentication will implement this interface. 

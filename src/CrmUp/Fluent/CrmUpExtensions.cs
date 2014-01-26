@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Reflection;
+using CrmUp.Dynamics;
+using CrmUp.Fluent;
+using CrmUp.Util;
 using DbUp.Builder;
 using DbUp.Engine;
 using DbUp.Engine.Transactions;
 using DbUp.Support.SqlServer;
 using Microsoft.Xrm.Sdk.Deployment;
 
+// ReSharper disable CheckNamespace 
+// Do not change the namespace as we want anyone impprting the dynamics Sdk to get these handy utility extension methods without having
+// to set up additional Using / Imports statements.
 namespace CrmUp
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Exposes fluent API methods for DynamicsUpgradeEngineBuilder.
@@ -100,7 +107,7 @@ namespace CrmUp
             });
             return builder;
         }
-      
+
         #endregion
 
         private static DynamicsUpgradeEngineBuilder DynamicsCrmUpgradeEngineBuilder(IConnectionManager connectionManager, CrmOrganisationManager crmOrgManager)

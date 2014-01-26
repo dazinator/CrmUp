@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Diagnostics;
 using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Client;
@@ -9,7 +8,7 @@ using Microsoft.Xrm.Sdk.Client;
 using Microsoft.Xrm.Sdk.Deployment;
 using Microsoft.Xrm.Sdk.Discovery;
 
-namespace CrmUp
+namespace CrmUp.Dynamics
 {
 
     /// <summary>

@@ -2,7 +2,7 @@ using System;
 using System.Configuration;
 using Microsoft.Xrm.Client;
 
-namespace CrmUp
+namespace CrmUp.Dynamics
 {
     /// <summary>
     /// Single Responsibility: This class provides "CrmConnnections" and uses the AppConfig file to provide such connections. 

@@ -1,6 +1,6 @@
 using Microsoft.Xrm.Client;
 
-namespace CrmUp
+namespace CrmUp.Dynamics
 {
 
     /// <summary>

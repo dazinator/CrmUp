@@ -1,17 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.ServiceModel;
 using System.Threading;
-using System.Xml;
 using DbUp.Engine.Output;
-using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Deployment;
 using Microsoft.Xrm.Sdk.Discovery;
 using OrganizationState = Microsoft.Xrm.Sdk.Deployment.OrganizationState;
 
-namespace CrmUp
+namespace CrmUp.Dynamics
 {
     /// <summary>
     /// Single Responsibility: To provide management functions for Crm organisations, such as Creation, and Retreival.

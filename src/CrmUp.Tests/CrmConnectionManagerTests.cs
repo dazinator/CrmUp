@@ -16,6 +16,7 @@ using Rhino.Mocks;
 
 namespace CrmUp.Tests
 {
+    [Category("Connection Manager")]
     [TestFixture]
     public class CrmConnectionManagerTests : SpecificationFor<CrmConnectionManager>
     {
@@ -35,7 +36,7 @@ namespace CrmUp.Tests
 
             var mockServiceProvider = new FakeCrmServiceProvider(_mockOrgService, _mockDeploymentService,
                                                                 _mockDiscoveryService);
-         
+
             return new CrmConnectionManager(mockServiceProvider);
         }
 

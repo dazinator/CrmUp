@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace CrmUp.Tests
 {
+    [Category("Script")]
     [TestFixture]
     class SolutionFileTests
     {

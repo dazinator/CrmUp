@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CrmUp.Util;
 using DbUp.Engine;
 using DbUp.Engine.Output;
 using DbUp.Engine.Preprocessors;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CrmUp
+namespace CrmUp.Dynamics
 {
     public class OrganisationDoesNotExistException : Exception
     {

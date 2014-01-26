@@ -2,7 +2,7 @@ using System.Net;
 using System.ServiceModel.Description;
 using Microsoft.Xrm.Sdk.Client;
 
-namespace CrmUp
+namespace CrmUp.Dynamics
 {
 
     /// <summary>

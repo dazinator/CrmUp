@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 
-namespace CrmUp
+namespace CrmUp.Dynamics
 {
     /// <summary>
     /// Single responsbility: To provide a fluent API for constructing Crm Entity Metadata.

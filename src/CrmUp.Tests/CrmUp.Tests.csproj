@@ -132,16 +132,18 @@
   <ItemGroup>
     <Compile Include="CrmEntityJournalTests.cs" />
     <Compile Include="CrmEntityJournal_NoJournalEntityMetadataTests.cs" />
-    <Compile Include="CrmSolutionScriptExecutorTests.cs" />
+    <Compile Include="CrmEntityJournal_NoOrganisationExists.cs" />
+    <Compile Include="CrmSolutionScriptExecutorSpecificationOne.cs" />
     <Compile Include="CrmConnectionManagerTests.cs" />
+    <Compile Include="EmbeddedCrmMigrationScriptProviderTests.cs" />
     <Compile Include="FakeCrmServiceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sample Code\Apply Solution File to Crm.cs" />
-    <Compile Include="Sample Code\SolutionFileTests.cs" />
     <Compile Include="ScriptProviderTests.cs" />
     <Compile Include="SolutionFileTests.cs" />
     <Compile Include="SpecificationFor.cs" />
     <Compile Include="FakeCrmConnectionManager.cs" />
+    <Compile Include="TestScripts\_ImportReferenceData.cs" />
     <Compile Include="ThenAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -170,9 +172,6 @@
     <Content Include="bin\tools\Microsoft.Xrm.Sdk.dll" />
     <Content Include="bin\tools\SolutionPackager.exe" />
     <Content Include="bin\tools\WebsiteCopy.exe" />
-    <EmbeddedResource Include="TestScripts\CrmOrganisation.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CrmUp.Console\CrmUp.Console.csproj">

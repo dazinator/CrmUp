@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using CrmUp.Dynamics;
 using DbUp.Engine;
 using DbUp.Engine.Output;
 using DbUp.Engine.Transactions;
@@ -16,6 +17,7 @@ using Rhino.Mocks;
 
 namespace CrmUp.Tests
 {
+    [Category("Journal")]
     [TestFixture]
     public class CrmEntityJournalTests
     {

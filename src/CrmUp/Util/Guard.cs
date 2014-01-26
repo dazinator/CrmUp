@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CrmUp
+namespace CrmUp.Util
 {
     public static class Guard
     {

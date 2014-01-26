@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using DbUp.Engine;
 using DbUp.Engine.Output;
 using NUnit.Framework;
@@ -11,14 +8,15 @@ using NUnit.Framework;
 namespace CrmUp.Tests
 {
     [Category("Script Provider")]
-    public class EmbeddedCrmSolutionScriptProviderTests : SpecificationFor<EmbeddedCrmSolutionScriptProvider>
+    public class EmbeddedCrmSolutionAndCodeMigrationProviderTests : SpecificationFor<EmbeddedCrmSolutionAndCodeMigrationProvider>
     {
+
         private SqlScript[] scriptsToExecute;
 
-        public override EmbeddedCrmSolutionScriptProvider Given()
+        public override EmbeddedCrmSolutionAndCodeMigrationProvider Given()
         {
             var assembly = Assembly.GetExecutingAssembly();
-            return new EmbeddedCrmSolutionScriptProvider(assembly, s => s.EndsWith(".zip"));
+            return new EmbeddedCrmSolutionAndCodeMigrationProvider(assembly, s => s.EndsWith(".zip"));
         }
 
         public override void When()
@@ -29,12 +27,9 @@ namespace CrmUp.Tests
         }
 
         [Then]
-        public void Should_Return_All_Solution_Files()
+        public void Should_Return_All_Solution_Files_And_Code_Migrations()
         {
-            Assert.AreEqual(2, scriptsToExecute.Length);
+            Assert.AreEqual(3, scriptsToExecute.Length);
         }
     }
 }
- 
-    
-

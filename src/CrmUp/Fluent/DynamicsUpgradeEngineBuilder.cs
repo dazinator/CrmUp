@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DbUp.Builder;
-using DbUp.Engine;
+﻿using DbUp.Builder;
 
-namespace CrmUp
+namespace CrmUp.Fluent
 {
     /// <summary>
     /// This class serves as the type to be extended via Extension Methods in order to expose the Fluent API for the Dynamics Crm Upgrade Engine Builder.
