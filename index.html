@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8'>
-    <meta name="description" content="Crmup : CrmUp is an extension to DbUp that helps you to deploy changes to Microsoft Dynamics Crm in a Continuos manner." />
+    <meta name="description" content="CrmUp : CrmUp is an extension to DbUp that helps you to deploy changes to Microsoft Dynamics Crm in a Continuos manner." />
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
     <!--[if lt IE 9]>
@@ -35,15 +35,42 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
         <section id="Section2" class="inner">
-
-            <h2>Brief Introduction</h2>
+                 <h2>Problem Statement</h2>
+                <p>
+                    Teams / Organisations can often stuggle when it comes to making repeatable deployments of Dynamics Crm customisations accross multiple envrionments such as Dev, UAT, and Production. 
+                    So much so that there is a <a href="http://www.microsoft.com/en-gb/download/details.aspx?id=27824">white paper</a> regarding this topic. 
+                    Many organisations can rely on manual deployment instructions for each release, for example the need for someone to manually register a plugin, or to manually remove or modify a workflow, or perhaps manually enter reference data or apply a particular Solution file. 
+                    There are many problems with manual deployments, here are some:
+                </p>
+                 <ul>
+                        <li>They can take a large amount of person-hours from your organisation. Wouldn't you rather put that time to better use on things that actually add value?</li>
+                        <li>They invite mistakes, and envrionments can quickly become out of line, negating your entire investment in maintaining those envrionments when they can no longer fulfill the purpose they are maintained for.</li>
+                        <li>It's harder to quickly "spin up" a development or test envrionemnt as manual hoops have to be jumped through.</li>
+                        <li>It becomes easy to impose detrimental constraints upon the design of your solution in order to facilitate the need for an easy manual deployment process. For example, sometimes organisations may be scared to move a field in Crm from one location to another 
+                        even though the overall solution would benefit from the change, and the reason may be because doing so would introduce an element of data migration to migrate existing data and without a way to automate this, it becomes a potentially dangerous and time consuming activity for the person who does the deployment. </li>
+                    </ul>
+                    <p>    Ultimately, The length of projects can be long, and when you are constantly delivering changes, having an auotomated and repeatable deployment procedure is going to pay dividends.</p>
+                
+                   <h2>A Solution</h2>
             <p>CrmUp can help to enable you and your Microsoft Dynamics Crm projects to reach that special DevOps nirvana known as &quot;Continuous Delivery Land&quot;.</p>
                 <br />
             <p>
-                CrmUp uses a <em><strong>change script</strong></em> approach, which means it will apply only the necessary <em><strong>change scripts</strong></em> that are required in order to roll the target Dynamics CRM Organisation up to the current version. 
-                    The <strong><em>change scripts</em></strong> are provided by you, in the form of &quot;Dynamics Crm Solution&quot; files. Solution files should be familiar to anyone who works with customising Dynamics Crm, and they effectively contain the customisations that will be applied.
+                CrmUp uses a <em><strong>change script</strong></em> approach, which means it will apply all necessary <em><strong>change scripts</strong></em> required to roll the target Dynamics CRM Organisation up to the correct version. 
+                    The <strong><em>change scripts</em></strong> are provided by you, in the form of:-
+                    
             </p>
-                <br />
+            
+               <ul>
+                        <li>Dynamics Crm Solution files.</li>
+                        <li>Code based migrations.</li>
+                    </ul>
+                    <p>
+                           <b>&quot;Dynamics Crm Solution&quot; files</b> should be familiar to anyone who works with customising Dynamics Crm, and they effectively contain customisations to apply.
+                    <br>
+                    <b>Code based migrations</b> are methods that are written by a developer in order to perform an activity that would otherwise have to be achieved manually. There are many such activities of this nature mentioned in the <a href="http://www.microsoft.com/en-gb/download/details.aspx?id=27824">white paper</a> such as importing reference / configurational data into Crm for example.
+                        
+                    </p>
+                    
             <p>At the heart of CrmUp lies <a href="http://dbup.github.io/">DbUp</a>, and CrmUp is an extension for <a href="http://dbup.github.io/">DbUp </a>that brings <a href="http://dbup.github.io/">DbUp's </a>philosophy to the realm of Microsoft Dynamics Crm.</p>
                 <br />
 
