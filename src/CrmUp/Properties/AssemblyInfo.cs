@@ -14,5 +14,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("31aa40c5-490f-4ea5-8f76-bfec93c75191")]
 [assembly: AssemblyVersion("1.0.3.*")]
 [assembly: AssemblyFileVersion("1.0.3.0")]
-[assembly: AssemblyCompanyAttribute("Darrell Tunnell")]
-[assembly: AssemblyProductAttribute("CrmUp")]
+
