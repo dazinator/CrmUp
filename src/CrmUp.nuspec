@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>CrmUp</id>
+    <version>1.0.0</version>
+    <title>CrmUp</title>
+    <description>CrmUp is a .NET library that helps you to automate the deployment of your Microsoft Dynamics Crm customisations. See http://dazinator.github.io/CrmUp/ for details.</description>
+    <authors>Darrell Tunnell</authors>
+    <owners>Darrell Tunnell</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>   
+    <language>en-gb</language>
+    <projectUrl>http://dazinator.github.io/CrmUp/</projectUrl>
+    <copyright>Copyright © Darrell Tunnell 2014</copyright>
+    <releaseNotes>Previous versions of this NuGet package only installed correctly when your visual studio project was targeting .NET 4.5. Now .NET 4.0 and 4.5 compatible binaries are included in the NuGet package so as long as your project is targeting either one of those then it will install correctly. Other versions of .NET are not currently supported.</releaseNotes>
+    <tags>Dynamics Crm Continuous Deployment</tags>
+    <dependencies>
+      <dependency id="dbup" version="3.0.6" />
+      <dependency id="Microsoft.CrmSdk.Extensions" version="6.0.2" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="CrmUp\bin\Release\net40\CrmUp.dll" target="lib\net40\CrmUp.dll" />
+    <file src="CrmUp\bin\Release\net40\CrmUp.pdb" target="lib\net40\CrmUp.pdb" />
+    <file src="CrmUp\bin\Release\net45\CrmUp.dll" target="lib\net45\CrmUp.dll" />
+    <file src="CrmUp\bin\Release\net45\CrmUp.pdb" target="lib\net45\CrmUp.pdb" />
+
+  </files>
+  
+</package>

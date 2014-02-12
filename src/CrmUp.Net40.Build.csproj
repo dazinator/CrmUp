@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<Project ToolsVersion="4.0" DefaultTargets="AfterBuild" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!--The nuget feed url to push nuget package to -->
+    <PushTo Condition="$(PushTo) == ''">https://www.nuget.org/</PushTo>
+    <!--The version number of the assembly info-->
+    <AssemblyVersionNumber Condition="$(AssemblyVersionNumber) == ''">
+    </AssemblyVersionNumber>
+    <!--The version number provided by build server-->
+    <BuildVersionNumber Condition="$(BuildVersionNumber) == ''">
+    </BuildVersionNumber>
+    <!--The version number for the NuGet Package (This is a combination of assembly version number with appended build version number info)-->
+    <PackageVersionNumber Condition="$(PackageVersionNumber) == ''">
+    </PackageVersionNumber>
+    <!--Where the NuGet package will be output to.-->
+    <PackageOutputDir Condition="$(PackageOutputDir) == ''">$(TargetDir.Trim('\\'))\NuGet\</PackageOutputDir>
+    <PackageOutputDir Condition="$(PackageOutputDir) != ''">$(PackageOutputDir.Trim('\\'))</PackageOutputDir>
+    <NuGetExe>$(SolutionDir)..\lib\NuGet.CommandLine.2.7.3\tools\NuGet.exe</NuGetExe>
+    <ProjectGuid>{6DEB1011-1DC7-48BE-969A-382A89A198B5}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <Target Name="AfterBuild" DependsOnTargets="ReadAssemblyVersion; SetPackageVersionNumber; Package" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Message Text="Building Nuget Package" />
+  </Target>
+  <!--Ensures that an assembly version number property is set.-->
+  <Target Name="ReadAssemblyVersion" Condition="$(AssemblyVersionNumber) == ''">
+    <!-- Load up the information from the assembly -->
+    <GetAssemblyIdentity AssemblyFiles="$(OutputPath)$(AssemblyName).dll">
+      <Output TaskParameter="Assemblies" ItemName="OutputAssemblyInfo" />
+    </GetAssemblyIdentity>
+    <Message Text="Info: %(OutputAssemblyInfo.Version)" />
+    <PropertyGroup>
+      <AssemblyVersionNumber>%(OutputAssemblyInfo.Version)</AssemblyVersionNumber>
+    </PropertyGroup>
+  </Target>
+  <!--Ensures that an assembly version number property is set.-->
+  <Target Name="SetPackageVersionNumber" Condition="$(PackageVersionNumber) == ''">
+    <!--Use the assembly version number, wiith build version number appended if present.-->
+    <PropertyGroup>
+      <PackageVersionNumber Condition="$(BuildVersionNumber) != ''">$(AssemblyVersionNumber).$(BuildVersionNumber)</PackageVersionNumber>
+      <PackageVersionNumber Condition="$(BuildVersionNumber) == ''">$(AssemblyVersionNumber)</PackageVersionNumber>
+    </PropertyGroup>
+    <Message Text="Package Version Number Output : $(PackageVersionNumber)" />
+  </Target>
+  <Target Name="Package">
+    <Message Importance="high" Text="Building packages" />
+    <Message Importance="high" Text="NuGet Package version number is $(PackageVersionNumber)" />
+    <Message Importance="high" Text="Package output directory is $(PackageOutputDir)" />
+    <!-- Ensure the Package directory exists for this project -->
+    <RemoveDir Directories="NuGet" />
+    <MakeDir Directories="NuGet" />
+    <PropertyGroup>
+      <BuildCommand>$(NuGetExe) pack $(SolutionDir)CrmUp.nuspec -Properties "Configuration=$(Configuration);Platform=$(Platform);" $(NonInteractiveSwitch) -OutputDirectory "$(PackageOutputDir)" -Version "$(PackageVersionNumber)" -symbols -Verbose</BuildCommand>
+      <OutputPackage>$(PackageOutputDir)\$(TargetName).$(PackageVersionNumber).nupkg</OutputPackage>
+    </PropertyGroup>
+    <Message Importance="high" Text="Build command is $(BuildCommand)" />
+    <Exec Command="$(BuildCommand)" LogStandardErrorAsError="true" Condition=" '$(OS)' == 'Windows_NT' " />
+    <Message Importance="high" Text="Package created.." />
+  </Target>
+  <Target Name="PublishNugetPackages">
+    <PropertyGroup>
+      <PushCommand>$(NuGetExe) push "$(OutputPackage)" -s $(PushTo)</PushCommand>
+    </PropertyGroup>
+    <Message Importance="high" Text="Push command is $(PushCommand)" />
+    <Message Importance="high" Text="Expected Output Package is $(OutputPackage)" />
+    <Exec Command="$(PushCommand)" />
+    <Message Importance="high" Text="Package pushed to $(PushTo)" />
+  </Target>
+</Project>

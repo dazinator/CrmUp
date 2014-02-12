@@ -2,10 +2,10 @@
 <Project ToolsVersion="4.0"
          DefaultTargets="AfterBuild"
          xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  
+
   <PropertyGroup>
     <!--The nuget feed url to push nuget package to -->
-    <PushTo Condition="$(PushTo) == ''">https://www.nuget.org/</PushTo>   
+    <PushTo Condition="$(PushTo) == ''">https://www.nuget.org/</PushTo>
     <!--The version number of the assembly info-->
     <AssemblyVersionNumber Condition="$(AssemblyVersionNumber) == ''"></AssemblyVersionNumber>
     <!--The version number provided by build server-->
@@ -13,65 +13,95 @@
     <!--The version number for the NuGet Package (This is a combination of assembly version number with appended build version number info)-->
     <PackageVersionNumber Condition="$(PackageVersionNumber) == ''"></PackageVersionNumber>
     <!--Where the NuGet package will be output to.-->
-    <PackageOutputDir Condition="$(PackageOutputDir) == ''">$(TargetDir.Trim('\\'))</PackageOutputDir>
+    <PackageOutputDir Condition="$(PackageOutputDir) == ''">$(TargetDir.Trim('\\'))\NuGet\</PackageOutputDir>
     <PackageOutputDir Condition="$(PackageOutputDir) != ''">$(PackageOutputDir.Trim('\\'))</PackageOutputDir>
-    <!--The path of the assemblyinfo file.-->
-    <VersionFile Condition="$(VersionFile) == ''">Properties\AssemblyInfo.cs</VersionFile>
+    <NuGetExe>$(SolutionDir)..\lib\NuGet.CommandLine.2.7.3\tools\NuGet.exe</NuGetExe>
   </PropertyGroup>
 
-  <Target Name="AfterBuild" DependsOnTargets="EnsureAssemblyVersionNumber; EnsurePackageVersionNumber; PublishNugetPackages" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Message Text="Building Nuget Package"/>
-
+  <!--After Build - Release|AnyCPU.-->
+  <Target Name="AfterBuild" DependsOnTargets="GetPackageVersionNumber; BuildNet40; BuildNet45; CreatePackages; PushPackages" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
   </Target>
 
-  <!--Ensures that an assembly version number property is set.-->
-  <Target Name="EnsureAssemblyVersionNumber" Condition="$(AssemblyVersionNumber) == ''">
-    <!--Read the assembly version number.-->
-    <ReadLinesFromFile File="$(VersionFile)">
-      <Output TaskParameter="Lines"
-              ItemName="ItemsFromFile"/>
-    </ReadLinesFromFile>
-    <PropertyGroup>
-      <Pattern>\[assembly: AssemblyVersion\(.(\d+)\.(\d+)\.(\d+)</Pattern>
-      <In>@(ItemsFromFile)</In>
-      <Out>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern)))</Out>
-    </PropertyGroup>
-    <Message Text="Assembly Version Number Output : $(Out)"/>
-    <PropertyGroup>
-      <AssemblyVersionNumber Condition="$(AssemblyVersionNumber) == ''">$(Out.Remove(0, 28))</AssemblyVersionNumber>
-    </PropertyGroup>
-    <Message Text="Package Assembly Version Number Output : $(AssemblyVersionNumber)"/>
+  <!--Builds the project targeting .NET 4.0.-->
+  <Target Name="BuildNet40">
+    <Message  Importance="high" Text="Building .NET 4.0.."/>
+    <ItemGroup>
+      <ProjectReferences Include="$(ProjectPath)" />
+    </ItemGroup>
+    <MSBuild
+        Projects="@(ProjectReferences)"
+        Properties="Configuration=Release 4.0"
+        Targets="Build">
+      <Output
+          TaskParameter="TargetOutputs"
+          ItemName="AssembliesBuiltByChildProjects" />
+    </MSBuild>
   </Target>
 
-  <!--Ensures that an assembly version number property is set.-->
-  <Target Name="EnsurePackageVersionNumber" Condition="$(PackageVersionNumber) == ''">
-    <!--Use the assembly version number, wiith build version number appended if present.-->
+  <!--Builds the project targeting .NET 4.5.-->
+  <Target Name="BuildNet45">
+    <Message  Importance="high" Text="Building .NET 4.5.."/>
+    <ItemGroup>
+      <ProjectReferences Include="$(ProjectPath)" />
+    </ItemGroup>
+    <MSBuild
+        Projects="@(ProjectReferences)"
+        Properties="Configuration=Release 4.5"
+        Targets="Build">
+      <Output
+          TaskParameter="TargetOutputs"
+          ItemName="AssembliesBuiltByChildProjects" />
+    </MSBuild>
+  </Target>
+
+  <!--Reads the assembly version number.-->
+  <Target Name="GetPackageVersionNumber" Condition="$(PackageVersionNumber) == ''">
+    <!-- Read the assembly version number and use that for the package version number -->
+    <GetAssemblyIdentity AssemblyFiles="$(OutputPath)$(AssemblyName).dll">
+      <Output TaskParameter="Assemblies" ItemName="OutputAssemblyInfo" />
+    </GetAssemblyIdentity>
+    <Message Text="Info: %(OutputAssemblyInfo.Version)" />
     <PropertyGroup>
-      <!--Nuget packages doesn't support full semver format of using + and . notation for build metadata so having to get changeset number from build label, and put that into a fourth digit. -->
-      <PackageVersionNumber Condition="$(BuildVersionNumber) != ''">$(AssemblyVersionNumber).$(BuildVersionNumber.Replace('.', '').Replace('R', '').Replace('D', '').Remove(0,2).PadLeft(5,'0'))</PackageVersionNumber>
+      <AssemblyVersionNumber>%(OutputAssemblyInfo.Version)</AssemblyVersionNumber>
+      <!-- If a BuildVersionNumber is supplied we can append that as the last digit of the package version number -->
+      <PackageVersionNumber Condition="$(BuildVersionNumber) != ''">$(AssemblyVersionNumber).$(BuildVersionNumber)</PackageVersionNumber>
       <PackageVersionNumber Condition="$(BuildVersionNumber) == ''">$(AssemblyVersionNumber)</PackageVersionNumber>
     </PropertyGroup>
     <Message Text="Package Version Number Output : $(PackageVersionNumber)"/>
   </Target>
 
-  <Target Name="PublishNugetPackages">
+  <!--Creates the NuGet package/s.-->
+  <Target Name="CreatePackages">
     <Message Importance="high" Text="Building packages"/>
     <Message Importance="high" Text="NuGet Package version number is $(PackageVersionNumber)"/>
     <Message Importance="high" Text="Package output directory is $(PackageOutputDir)"/>
+
+    <!-- Ensure the Package directory exists for this project -->
+    <RemoveDir Directories="$(PackageOutputDir)" />
+    <MakeDir Directories="$(PackageOutputDir)" />
+
     <PropertyGroup>
-      <NuGetExe>$(SolutionDir)..\lib\NuGet.CommandLine.2.7.3\tools\NuGet.exe</NuGetExe>
-      <BuildCommand>$(NuGetExe) pack -Properties "Configuration=$(Configuration);Platform=$(Platform);TargetPath=$(OutDir)$(AssemblyName)$(TargetExt)" $(NonInteractiveSwitch) -OutputDirectory "$(PackageOutputDir)" -Version "$(PackageVersionNumber)" -symbols -Verbose</BuildCommand>
+      <BuildCommand>$(NuGetExe) pack $(SolutionDir)CrmUp.nuspec -Properties "Configuration=$(Configuration);Platform=$(Platform);" $(NonInteractiveSwitch) -OutputDirectory "$(PackageOutputDir)" -Version "$(PackageVersionNumber)" -symbols -Verbose</BuildCommand>
       <OutputPackage>$(PackageOutputDir)\$(TargetName).$(PackageVersionNumber).nupkg</OutputPackage>
-      <PushCommand>$(NuGetExe) push "$(OutputPackage)" -s $(PushTo)</PushCommand>
     </PropertyGroup>
+
     <Message Importance="high" Text="Build command is $(BuildCommand)"/>
-    <Message Importance="high" Text="Push command is $(PushCommand)"/>
-    <Message Importance="high" Text="Expected Output Package is $(OutputPackage)"/>
 
     <Exec Command="$(BuildCommand)"
-             LogStandardErrorAsError="true"
-             Condition=" '$(OS)' == 'Windows_NT' " />
+           LogStandardErrorAsError="true"
+           Condition=" '$(OS)' == 'Windows_NT' " />
     <Message  Importance="high" Text="Package created.."/>
+
+  </Target>
+
+  <!--Pushes the NuGet package/s.-->
+  <Target Name="PushPackages">
+
+    <PropertyGroup>
+      <PushCommand>$(NuGetExe) push "$(OutputPackage)" -s $(PushTo)</PushCommand>
+    </PropertyGroup>
+    <Message Importance="high" Text="Push command is $(PushCommand)"/>
+    <Message Importance="high" Text="Expected Output Package is $(OutputPackage)"/>
 
     <Exec Command="$(PushCommand)"/>
     <Message  Importance="high" Text="Package pushed to $(PushTo)"/>
