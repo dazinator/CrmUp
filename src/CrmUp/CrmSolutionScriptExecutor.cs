@@ -22,7 +22,7 @@ namespace CrmUp
         private Func<IUpgradeLog> _LogFactory = null;
         private Func<bool> _VariablesEnabled = null;
         private IEnumerable<IScriptPreprocessor> _ScriptPreProcessors = null;
-      
+
         public CrmSolutionScriptExecutor(Func<IConnectionManager> connectionManagerFactory, Func<IUpgradeLog> logFactory, Func<bool> variablesEnabled, IEnumerable<IScriptPreprocessor> scriptPreprocessors)
         {
             _ConnectionManagerFactory = connectionManagerFactory;
@@ -71,23 +71,32 @@ namespace CrmUp
                 foreach (var statement in scriptStatements)
                 {
                     index++;
+                    bool isSolution = false;
+                    bool isCodeMigration = false;
 
-                    var solution = Guard.EnsureIs<CrmSolutionFile, SqlScript>(script, "Script");
-                    var impSolReq = new ImportSolutionRequest()
+                    if (script is CrmSolutionFile)
                     {
-                        CustomizationFile = solution.FileBytes
-                    };
+                        isSolution = true;
+                    }
+                    else if (script is CrmCodeMigrationScript)
+                    {
+                        isCodeMigration = true;
+                    }
 
-                    var conn = _ConnectionManagerFactory();
-                    var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
-                    crmConnManager.ExecuteWithManagedConnection((a) =>
+                    if (!isSolution && !isCodeMigration)
                     {
-                        var response = a().Execute(impSolReq);
-                        if (connectionManager.IsScriptOutputLogged)
-                        {
-                            Log(response);
-                        }
-                    });
+                        throw new InvalidOperationException("The migration to be applied is not of an expected type.");
+                    }
+
+                    if (isSolution)
+                    {
+                        ApplySolution(connectionManager, script as CrmSolutionFile);
+                    }
+                    else if (isCodeMigration)
+                    {
+                        ApplyCodeMigration(connectionManager, script as CrmCodeMigrationScript);
+                    }
+
                     //command.CommandText = statement;
                     //if (ExecutionTimeoutSeconds != null)
                     //    command.CommandTimeout = ExecutionTimeoutSeconds.Value;
@@ -126,6 +135,30 @@ namespace CrmUp
         /// </summary>
         public int? ExecutionTimeoutSeconds { get; set; }
 
-    
+        protected virtual void ApplySolution(IConnectionManager connectionManager, CrmSolutionFile solution)
+        {
+            var impSolReq = new ImportSolutionRequest()
+            {
+                CustomizationFile = solution.FileBytes
+            };
+            var conn = _ConnectionManagerFactory();
+            var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
+            crmConnManager.ExecuteWithManagedConnection((a) =>
+            {
+                var response = a().Execute(impSolReq);
+                if (connectionManager.IsScriptOutputLogged)
+                {
+                    Log(response);
+                }
+            });
+        }
+
+        protected virtual void ApplyCodeMigration(IConnectionManager connectionManager, CrmCodeMigrationScript migration)
+        {
+            var conn = _ConnectionManagerFactory();
+            var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
+            migration.Apply(crmConnManager.CrmServiceProvider, _LogFactory());
+        }
+
     }
 }

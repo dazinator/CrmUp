@@ -130,6 +130,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CrmSolutionScriptExecutorSpecificationTwo.cs" />
     <Compile Include="CrmEntityJournalTests.cs" />
     <Compile Include="CrmEntityJournal_NoJournalEntityMetadataTests.cs" />
     <Compile Include="CrmEntityJournal_NoOrganisationExists.cs" />
@@ -143,7 +144,7 @@
     <Compile Include="SolutionFileTests.cs" />
     <Compile Include="SpecificationFor.cs" />
     <Compile Include="FakeCrmConnectionManager.cs" />
-    <Compile Include="TestScripts\_ImportReferenceData.cs" />
+    <Compile Include="TestScripts\TestMigration.cs" />
     <Compile Include="ThenAttribute.cs" />
   </ItemGroup>
   <ItemGroup>

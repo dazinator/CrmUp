@@ -58,6 +58,36 @@ namespace CrmUp
         #endregion
 
         #region With Migrations
+
+
+        /// <summary>
+        /// Adds all solution files found and code based migrations as embedded resources in the given assembly.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="assembly">The assembly.</param>
+        /// <returns>
+        /// The same builder
+        /// </returns>
+        public static DynamicsUpgradeEngineBuilder WithSolutionsAndMigrationsEmbeddedInAssembly(this DynamicsUpgradeEngineBuilder builder, Assembly assembly)
+        {
+            return WithSolutionsAndMigrationsEmbeddedInAssembly(builder, assembly, s => s.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        /// <summary>
+        /// Adds all solution files found as embedded resources in the given assembly, as well as code based migrations.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="filter"></param>
+        /// <returns>
+        /// The same builder
+        /// </returns>
+        public static DynamicsUpgradeEngineBuilder WithSolutionsAndMigrationsEmbeddedInAssembly(this DynamicsUpgradeEngineBuilder builder, Assembly assembly, Func<string, bool> filter)
+        {
+            return builder.WithScripts(new EmbeddedCrmSolutionAndCodeMigrationProvider(assembly, filter)) as DynamicsUpgradeEngineBuilder;
+        }
+
+
         /// <summary>
         /// Adds all solution files found as embedded resources in the given assembly.
         /// </summary>

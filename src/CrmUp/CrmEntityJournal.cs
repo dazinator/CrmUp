@@ -43,7 +43,6 @@ namespace CrmUp
             set { _ensureOrganisationExists = value; }
         }
 
-
         public string[] GetExecutedScripts()
         {
             try

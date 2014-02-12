@@ -7,15 +7,17 @@ using DbUp.Engine.Output;
 
 namespace CrmUp.Tests.TestScripts.Unmanaged
 {
-    public class _ImportReferenceData : CrmCodeMigration
+    public class TestMigration : CrmCodeMigration
     {
+
+        public bool Ran { get; set; }
+
         public override void Up(Dynamics.ICrmServiceProvider serviceProvider, IUpgradeLog log)
         {
             var service = serviceProvider.GetOrganisationService();
             using (service as IDisposable)
             {
-               throw new NotImplementedException("This migration script has not yet been implemented..");
-
+                Ran = true;
             }
         }
     }

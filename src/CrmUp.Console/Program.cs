@@ -45,6 +45,21 @@ namespace CrmUp
         private static CreateOrganisationArgs OrgToCreate()
         {
             var args = new CreateOrganisationArgs();
+            var orgConnectionString =
+                ConfigurationManager.ConnectionStrings["CrmOrganisationServiceConnectionString"].ConnectionString;
+
+            //var url = orgConnectionString.Split(new string[] {"Url="}, StringSplitOptions.RemoveEmptyEntries)[0];
+            string urlParamName = "Url=";
+            var indexOfUrl = orgConnectionString.IndexOf("Url=", System.StringComparison.Ordinal);
+            indexOfUrl = indexOfUrl + urlParamName.Length;
+            var indexOfEndOfUrl = orgConnectionString.IndexOf(';', indexOfUrl);
+            var urlLength = indexOfEndOfUrl - indexOfUrl;
+            var url = orgConnectionString.Substring(indexOfUrl, urlLength);
+            // The orgname is after the last slash.
+            var uri = new Uri(url);
+
+            var orgName = uri.Segments[1];
+           // Console.Write("Or");
             args.Organisation = new Microsoft.Xrm.Sdk.Deployment.Organization
                 {
                     BaseCurrencyCode = RegionInfo.CurrentRegion.ISOCurrencySymbol,
@@ -52,8 +67,8 @@ namespace CrmUp
                     BaseCurrencyPrecision = 2,
                     BaseCurrencySymbol = RegionInfo.CurrentRegion.CurrencySymbol,
                     BaseLanguageCode = 1033,
-                    FriendlyName = ConfigurationManager.AppSettings["CrmOrganisationName"],
-                    UniqueName = ConfigurationManager.AppSettings["CrmOrganisationName"],
+                    FriendlyName = orgName,
+                    UniqueName = orgName,
                     SqlCollation = "Latin1_General_CI_AI",
                     SqlServerName = ConfigurationManager.AppSettings["CrmSqlServer"],
                     SrsUrl = ConfigurationManager.AppSettings["CrmSSRSServer"],
