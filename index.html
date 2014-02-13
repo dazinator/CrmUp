@@ -35,57 +35,71 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
         <section id="Section2" class="inner">
-                 <h2>Problem Statement</h2>
-                <p>
-                    Teams / Organisations can often stuggle when it comes to making repeatable deployments of Dynamics Crm customisations accross multiple envrionments such as Dev, UAT, and Production. 
-                    So much so that there is a <a href="http://www.microsoft.com/en-gb/download/details.aspx?id=27824">white paper</a> regarding this topic. 
-                    Many organisations can rely on manual deployment instructions for each release, for example the need for someone to manually register a plugin, or to manually remove or modify a workflow, or perhaps manually enter reference data or apply a particular Solution file. 
-                    There are many problems with manual deployments, here are some:
-                </p>
-                 <ul>
-                        <li>They can take a large amount of person-hours from your organisation. Wouldn't you rather put that time to better use on things that actually add value?</li>
-                        <li>They invite mistakes, and envrionments can quickly become out of line, negating your entire investment in maintaining those envrionments when they can no longer fulfill the purpose they are maintained for.</li>
-                        <li>It's harder to quickly "spin up" a development or test envrionemnt as manual hoops have to be jumped through.</li>
-                        <li>It becomes easy to impose detrimental constraints upon the design of your solution in order to facilitate the need for an easy manual deployment process. For example, sometimes organisations may be scared to move a field in Crm from one location to another 
-                        even though the overall solution would benefit from the change, and the reason may be because doing so would introduce an element of data migration to migrate existing data and without a way to automate this, it becomes a potentially dangerous and time consuming activity for the person who does the deployment. </li>
-                    </ul>
-                    <p>    Ultimately, The length of projects can be long, and when you are constantly delivering changes, having an auotomated and repeatable deployment procedure is going to pay dividends.</p>
-                
-                   <h2>A Solution</h2>
-            <p>CrmUp can help to enable you and your Microsoft Dynamics Crm projects to reach that special DevOps nirvana known as &quot;Continuous Delivery Land&quot;.</p>
-                <br />
+
+            <!--                 <h2>Repeatable Dynamics Crm deployments?</h2>
             <p>
-                CrmUp uses a <em><strong>change script</strong></em> approach, which means it will apply all necessary <em><strong>change scripts</strong></em> required to roll the target Dynamics CRM Organisation up to the correct version. 
-                    The <strong><em>change scripts</em></strong> are provided by you, in the form of:-
+                Coming up with a repeatable and automated deployment procedure for rolling out your latest Dynamics Crm changes / customisations accross environments such as Dev, UAT, Production is something that teams / organisations can often struggle with. 
+                    It can be a complex issue, and there are various <a href="http://www.microsoft.com/en-gb/download/details.aspx?id=27824">white papers</a> regarding this topic. 
+                    Many organisations end up resorting to procedures that are not repeatable, and require adhoc manual tasks to be performed from deployment to deployment. For example, one release may involve Mary having to manually apply a solution file to the UAT environment. The next release may involve Brian having to manually apply a solution file, or perhaps register a plugin or workflow on a Production environment.
+                    This manual ("Mary Brian"?) approach can quickly lead to headaches. Here are some of the problems this can introduce:-                 
+            </p>
+            <ul>
+                <li>Manual deployment procedures can take a large amount of person-hours from your organisation. Wouldn't you rather put that time to better use on things that actually add value?</li>
+                <li>Manual deployment procedures can invite mistakes. Environments can quickly become out of line, negating your confidence in the stability of that environment, and intrthose envrionments when they can no longer fulfill the purpose they are maintained for.</li>
+                <li>It's harder to quickly "spin up" a development or test envrionemnt as manual hoops have to be jumped through.</li>
+                <li>It becomes easy to impose detrimental constraints upon the design of your solution in order to facilitate the need for an easy manual deployment process. For example, sometimes organisations may be scared to move a field in Crm from one location to another 
+                        even though the overall solution would benefit from the change, and the reason may be because doing so would introduce an element of data migration to migrate existing data and without a way to automate this, it becomes a potentially dangerous and time consuming activity for the person who does the deployment. </li>
+            </ul>
+            <p>Ultimately, The length of projects can be long, and when you are constantly delivering changes, having an auotomated and repeatable deployment procedure is going to pay dividends.</p>-->
+            <h2>Deploying things to Dynamics Crm?</h2>
+            <p>CrmUp will help you to reach that nirvana known as &quot;Continuous Delivery Land&quot;.</p>
+            <br />
+            <p>
+                <ul>
+                    <li>Frustrated of manually applying Solution Files or registering workflows?</li>
+                    <li>Has a plugin been registered on Production but not in UAT?</li>
+                    <li>Do you value your time?</li>
+                </ul>
+
+                <strong><em>Never manually deploy anything to Dynamics CRM ever again.</em></strong>              
                     
             </p>
+             <p>
+                  CrmUp will apply all necessary changes (from your release) for you, essentially rolling up the target Dynamics Crm from its previous version to the version in your release.
+                  CrmUp can apply the things that you give it:-
+              </p>
             
-               <ul>
-                        <li>Dynamics Crm Solution files.</li>
-                        <li>Code based migrations.</li>
-                    </ul>
-                    <p>
-                           <b>&quot;Dynamics Crm Solution&quot; files</b> should be familiar to anyone who works with customising Dynamics Crm, and they effectively contain customisations to apply.
+            <ul>
+                <li>Dynamics Crm Solution files.</li>
+                <li>Code based activities / migrations.</li>
+            </ul>
+            <p>
+                <b>&quot;Dynamics Crm Solution&quot; files</b> should be familiar to anyone who works with customising Dynamics Crm, and they effectively contain customisations to apply.
                     <br>
-                    <b>Code based migrations</b> are methods that are written by a developer in order to perform an activity that would otherwise have to be achieved manually. There are many such activities of this nature mentioned in the <a href="http://www.microsoft.com/en-gb/download/details.aspx?id=27824">white paper</a> such as importing reference / configurational data into Crm for example.
-                        
-                    </p>
-                    
+                <b>Code based migrations</b> are methods that can be written by you (the developer) in order to perform an activity that would otherwise have to be achieved manually. There are many such activities of this nature that can be automated through code. Many are mentioned in the <a href="http://www.microsoft.com/en-gb/download/details.aspx?id=27824">white paper</a> such as importing some intial reference / configurational data into Dynamics for example, or un-registering a plugin etc.
+             
+            </p>
+             <h2>This library has roots..</h2>
             <p>At the heart of CrmUp lies <a href="http://dbup.github.io/">DbUp</a>, and CrmUp is an extension for <a href="http://dbup.github.io/">DbUp </a>that brings <a href="http://dbup.github.io/">DbUp's </a>philosophy to the realm of Microsoft Dynamics Crm.</p>
-                <br />
+            <br />
 
-                    <h2>Getting Started</h2>
-                    <p>Start by creating a simple C# console project in Visual Studio, and adding your Crm Solution files to it. From the properties window, mark them as Embedded Resources:</p>
+            <h2>Getting Started</h2>
+            <p>Start by creating a simple C# console project in Visual Studio, and adding your Crm Solution files to it. From the properties window, mark them as Embedded Resources:</p>
 
-                    <img src="images/add-solutions.png" alt="CrmUp Sample">
+            <img src="images/add-solutions.png" alt="CrmUp Sample">
 
-                    <p>Next, use NuGet to install the CrmUp package:</p>
+              <p>Under your project properties, make sure to set the Target Framework to either .NET 4.0 or .NET 4.5:</p>
 
-                    <pre><code>Install-Package CrmUp</code></pre>
+            <img src="images/TargetNET40.png" alt="CrmUp Sample">
 
-                    <p>Finally, in <code>Program.cs</code>, add the following code:</p>
 
-                     <pre><code>
+            <p>Next, use NuGet to install the CrmUp package:</p>
+
+            <pre><code>Install-Package CrmUp</code></pre>           
+
+            <p>Finally, in <code>Program.cs</code>, add the following code:</p>
+
+            <pre><code>
         static int Main(string[] args)
         {
             var connectionString = args.FirstOrDefault() 
@@ -117,52 +131,66 @@
 }
 </code></pre>
 
-                    <p>You now have a console application that can apply your Crm Solution files to a Dynamics Crm system in order to roll it up to the latest version! After running it, you'll see something like this:</p>
+            <p>You now have a console application that will apply your Crm Solution files to a Dynamics Crm system in order to roll it up to the latest version! After running it, you'll see something like this:</p>
 
-                    <img src="images/scripts-ran.png" alt="First run - the scripts get executed">
+            <img src="images/scripts-ran.png" alt="First run - the scripts get executed">
 
-                    <p>The next time you run it, you'll see:</p>
+            <p>The next time you run it, you'll see:</p>
 
-                    <img src="images/scripts-noneran.png" alt="Second run - the scripts have already been executed">
+            <img src="images/scripts-noneran.png" alt="Second run - the scripts have already been executed">
 
-                    <h2>Why a console application?</h2>
-                    <p>
-                        For many reasons, all of which are mentioned over on <a href="http://dbup.github.io/">DbUp's documentation </a>, but I will list them again here (copied from their site):
+            <h2>Why a console application?</h2>
+            <p>
+                For many reasons, all of which are mentioned over on <a href="http://dbup.github.io/">DbUp's documentation </a>, but I will list them again here (copied from their site):
                         
                         <blockquote cite="http://dbup.github.io/">
                             By putting your migration scripts in an executable that can be run, you'll get a lot of benefits:
-<ul>
-<li>You can hit F5 at any time to test the migration scripts</li>
-<li>Other developers on your team can do the same</li>
-<li>You can execute them as part of an automated deployment</li>
-<li>You can run it during your integration tests</li>
-<li>Since it's in your VS solution, it will go into source control along with the rest of your code</li>
-<li>Alternatively, instead of a console application, you can create a class library that references DbUp, and embed it into a maintenance screen inside your application.</li>
-    
-</ul>
+                            <ul>
+                                <li>You can hit F5 at any time to test the migration scripts</li>
+                                <li>Other developers on your team can do the same</li>
+                                <li>You can execute them as part of an automated deployment</li>
+                                <li>You can run it during your integration tests</li>
+                                <li>Since it's in your VS solution, it will go into source control along with the rest of your code</li>
+                                <li>Alternatively, instead of a console application, you can create a class library that references DbUp, and embed it into a maintenance screen inside your application.</li>
+
+                            </ul>
 
                         </blockquote>
-                    </p>
-                    <h2>Journaling</h2>
-                    <p>
-                        CrmUp creates a new entity in Crm, called "CrmUp Journal", and this is used to track the change scripts
-                        that have been applied to the system. Before running, CrmUp checks the Journal records to work out which change scripts can be skipped. After applying a change script, an appropriate journal record is created to record the change that has been applied.
-                    </p>
-                    <img src="images/schema-versions.png" alt="The Journal created by CrmUp">
-                    <h2>Resources</h2>
-                    <p>
-                        The source code for CrmUp is all on <a href="https://github.com/dazinator/CrmUp">GitHub</a>. Any issues can also be raised there.
-                    </p>
+            </p>
+            <h2>Journaling</h2>
+            <p>
+                CrmUp creates a new entity in Crm, called "CrmUp Journal", and this is used to track the change scripts
+                        that have been applied to the system. Before running, CrmUp checks the Journal records to work out which change scripts can be skipped. After applying a change script, an appropriate journal record is created to record the change that has been applied. If you ever want to know what Migrations have been applied to Dynamics CRM, you can query this entity.
+            </p>
+             <img src="images/schema-versions.png" alt="The Journal created by CrmUp">
+             <h2>Organisation Creation?</h2>
+             <p>
+                CrmUp can even automatically create the Dynamics Crm organisation for you if it doesn't allready exist:-
+                <pre><code>
+                    sample code to come..     
+               </code></pre>
+            </p>
+            <h2>Code based Migrations?</h2>
+             <p>
+                You can write code based migrations to perform any kind of deployment activity that you could want. Your code will be executed and provided access to the Dynamics Crm Organisation service. You can then perform your task such as 
+                 Importing some reference data from a CSV file, or Registering or Unregistering a component such as plugin or workflow..
+                <pre><code>
+                    sample code to come..     
+               </code></pre>
+            </p>
+            <h2>Resources</h2>
+            <p>
+                The source code for CrmUp is all on <a href="https://github.com/dazinator/CrmUp">GitHub</a>. Any issues can also be raised there.
+            </p>
 
         </section>
     </div>
-
-     <!-- FOOTER  -->
+    <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">CrmUp is maintained by <a href="https://github.com/dazinator">Darrell Tunnell</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-            </footer>
+        <footer class="inner">
+            <p class="copyright">CrmUp is maintained by <a href="https://github.com/dazinator">Darrell Tunnell</a></p>
+            <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        </footer>
     </div>
 </body>
 </html>
