@@ -16,7 +16,7 @@ namespace CrmUp
         }
 
         public CrmCodeMigrationScript(CrmCodeMigration migration)
-            : base(migration.GetType().FullName, string.Empty)
+            : base(migration.ScriptName, string.Empty)
         {
             _Migration = migration;
         }

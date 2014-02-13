@@ -12,6 +12,12 @@ namespace CrmUp.Tests.TestScripts.Unmanaged
 
         public bool Ran { get; set; }
 
+        private string _ScriptName = "TestMigration";
+        public override string ScriptName
+        {
+            get { return _ScriptName; }
+        }
+
         public override void Up(Dynamics.ICrmServiceProvider serviceProvider, IUpgradeLog log)
         {
             var service = serviceProvider.GetOrganisationService();

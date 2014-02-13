@@ -19,7 +19,7 @@ namespace CrmUp
             var upgrader =
                DeployChanges.To
                             .DynamicsCrmOrganisation()
-                            .WithSolutionsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
+                            .WithSolutionsAndMigrationsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
                             .CreateIfDoesNotExist(OrgToCreate)
                             .LogToConsole()
                             .Build();
