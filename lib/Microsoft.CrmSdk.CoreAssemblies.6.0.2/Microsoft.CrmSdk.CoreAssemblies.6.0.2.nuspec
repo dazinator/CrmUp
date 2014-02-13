@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.CrmSdk.CoreAssemblies</id>
+    <version>6.0.2</version>
+    <title>Microsoft Dynamics CRM 2013 SDK core assemblies</title>
+    <authors>crmsdk</authors>
+    <owners>crmsdk</owners>
+    <licenseUrl>http://download.microsoft.com/download/1/9/1/1911A849-415F-47DC-B0C1-F210D465C4C8/LicenseTerms.docx</licenseUrl>
+    <projectUrl>http://msdn.microsoft.com/en-us/dynamics/crm/jj937218.aspx</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>This package contains the official Microsoft.Xrm.Sdk.dll and Microsoft.Crm.Sdk.Proxy.dll assemblies plus tools and has been authored by the Microsoft Dynamics CRM SDK team.
+
+Command line tools can be found in the project's bin\tools folder.</description>
+    <summary>Core assemblies required to develop managed code applications that can access the Microsoft Dynamics CRM web services.</summary>
+    <releaseNotes>This package contains assemblies from the Microsoft Dynamics CRM 2013 Update Rollup 1 (UR1) release.</releaseNotes>
+    <copyright>© 2013 Microsoft Corporation</copyright>
+    <language>en-US</language>
+    <tags>Dynamics CRM 2013 SDK XRM</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="Microsoft.IdentityModel" version="6.1.7600.16394" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Runtime.Serialization" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.ServiceModel" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.IdentityModel" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Xml" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.ServiceModel" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.ServiceModel.Web" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Web" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.DirectoryServices" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.DirectoryServices.AccountManagement" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="System.Security" targetFramework=".NETFramework4.0" />
+      <frameworkAssembly assemblyName="Microsoft.IdentityModel" targetFramework=".NETFramework4.0" />
+    </frameworkAssemblies>
+  </metadata>
+</package>
