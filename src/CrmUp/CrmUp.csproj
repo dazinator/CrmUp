@@ -140,7 +140,7 @@
     <Compile Include="Dynamics\CrmConnectionProvider.cs" />
     <Compile Include="Fluent\DynamicsUpgradeEngineBuilder.cs" />
     <Compile Include="EmbeddedCrmSolutionAndCodeMigrationProvider.cs" />
-    <Compile Include="CrmMigration.cs" />
+    <Compile Include="CrmCodeMigrationScript.cs" />
     <Compile Include="CrmSolutionFile.cs" />
     <Compile Include="CrmSolutionJournal.cs" />
     <Compile Include="CrmSolutionScriptExecutor.cs" />
