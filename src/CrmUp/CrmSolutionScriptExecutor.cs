@@ -19,7 +19,7 @@ namespace CrmUp
     /// </summary>
     public class CrmSolutionScriptExecutor : IScriptExecutor
     {
-
+        public static object _Lock = new object();
         private Func<IConnectionManager> _ConnectionManagerFactory = null;
         private Func<IUpgradeLog> _LogFactory = null;
         private Func<bool> _VariablesEnabled = null;
@@ -148,7 +148,7 @@ namespace CrmUp
 
             var conn = _ConnectionManagerFactory();
             var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
-            
+
             crmConnManager.ExecuteWithManagedConnection((a) =>
                 {
                     var args = new MonitorProgressArgs
@@ -179,19 +179,41 @@ namespace CrmUp
         {
             // connect to crm again, don't reuse the connection that's used to import
             var monitorArgs = (MonitorProgressArgs)args;
-            try
+
+            if (Monitor.TryEnter(_Lock, 1000))
             {
-                monitorArgs.ConnectionManager.ExecuteWithManagedConnection((a) =>
+                try
                 {
-                    var job = a().Retrieve("importjob", (Guid)monitorArgs.JobId, new ColumnSet("solutionname", "progress"));
-                    decimal progress = Convert.ToDecimal(job["progress"]);
-                    monitorArgs.UpgradeLog.WriteInformation("{0:N0}%", progress);
-                    if (progress == 100) { return; }
-                });
+                    monitorArgs.UpgradeLog.WriteInformation("Checking status of the solution import..");
+                    IOrganizationService orgService =
+                        monitorArgs.ConnectionManager.CrmServiceProvider.GetOrganisationService();
+                    using (orgService as IDisposable)
+                    {
+
+                        var job = orgService.Retrieve("importjob", (Guid) monitorArgs.JobId,
+                                                      new ColumnSet("solutionname", "progress"));
+                        decimal progress = Convert.ToDecimal(job["progress"]);
+                        monitorArgs.UpgradeLog.WriteInformation("{0:N0}%", progress);
+                        if (progress == 100)
+                        {
+                            return;
+                        }
+                    }
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    // this could occur if the import finishes (on the main thread) and disposes the objects (shared state) that are also referenced from this thread to poll for progress.
+                    // Ideally this would be done in a thread safe way but for now this will suffice.
+                    monitorArgs.UpgradeLog.WriteInformation("A check for the progress of the solution import was terminated..", ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    monitorArgs.UpgradeLog.WriteError("An error occurred when checking the progress of the solution import: {0}", ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                monitorArgs.UpgradeLog.WriteError("Error checking progress of import: {0}", ex.Message);
+                monitorArgs.UpgradeLog.WriteInformation("Still awaiting import progress update from Crm..");
             }
         }
 
