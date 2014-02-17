@@ -157,7 +157,7 @@ namespace CrmUp
                         JobId = importId,
                         UpgradeLog = _LogFactory()
                     };
-                t.Start(importId);
+                t.Start(args);
                 var response = a().Execute(impSolReq);
                 if (connectionManager.IsScriptOutputLogged)
                 {
