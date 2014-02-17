@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using CrmUp.Dynamics;
 using CrmUp.Util;
 using DbUp.Engine;
 using DbUp.Engine.Output;
@@ -140,6 +141,7 @@ namespace CrmUp
         protected virtual void ApplySolution(IConnectionManager connectionManager, CrmSolutionFile solution)
         {
             Guid importId = Guid.NewGuid();
+          
             var impSolReq = new ImportSolutionRequest()
             {
                 CustomizationFile = solution.FileBytes,
@@ -153,10 +155,11 @@ namespace CrmUp
                 {
                     var args = new MonitorProgressArgs
                      {
-                         ConnectionManager = crmConnManager,
+                         CrmServiceProvider = crmConnManager.CrmServiceProvider,
                          JobId = importId,
                          UpgradeLog = _LogFactory()
                      };
+                    _LogFactory().WriteInformation("Import job id is: " + importId);
                     using (var timer = new Timer(new TimerCallback(ProgressReport), args, new TimeSpan(0, 0, 30), new TimeSpan(0, 1, 0)))
                     {
                         var response = a().Execute(impSolReq);
@@ -170,7 +173,7 @@ namespace CrmUp
 
         public class MonitorProgressArgs
         {
-            public CrmConnectionManager ConnectionManager { get; set; }
+            public ICrmServiceProvider CrmServiceProvider { get; set; }
             public Guid JobId { get; set; }
             public IUpgradeLog UpgradeLog { get; set; }
         }
@@ -186,10 +189,9 @@ namespace CrmUp
                 {
                     monitorArgs.UpgradeLog.WriteInformation("Checking status of the solution import..");
                     IOrganizationService orgService =
-                        monitorArgs.ConnectionManager.CrmServiceProvider.GetOrganisationService();
+                        monitorArgs.CrmServiceProvider.GetOrganisationService();
                     using (orgService as IDisposable)
                     {
-
                         var job = orgService.Retrieve("importjob", (Guid) monitorArgs.JobId,
                                                       new ColumnSet("solutionname", "progress"));
                         decimal progress = Convert.ToDecimal(job["progress"]);
@@ -202,13 +204,19 @@ namespace CrmUp
                 }
                 catch (ObjectDisposedException ex)
                 {
-                    // this could occur if the import finishes (on the main thread) and disposes the objects (shared state) that are also referenced from this thread to poll for progress.
+                    // This could occur if the main threa and disposes the objects (shared state) that are also referenced from this thread to poll for progress.
                     // Ideally this would be done in a thread safe way but for now this will suffice.
-                    monitorArgs.UpgradeLog.WriteInformation("A check for the progress of the solution import was terminated..", ex.Message);
+                    monitorArgs.UpgradeLog.WriteInformation(
+                        "A check for the progress of the solution import was terminated..", ex.Message);
                 }
                 catch (Exception ex)
                 {
-                    monitorArgs.UpgradeLog.WriteError("An error occurred when checking the progress of the solution import: {0}", ex.Message);
+                    monitorArgs.UpgradeLog.WriteError(
+                        "An error occurred when checking the progress of the solution import: {0}", ex.Message);
+                }
+                finally
+                {
+                    Monitor.Exit(_Lock);
                 }
             }
             else
