@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using CrmUp.Util;
 using DbUp.Engine;
 using DbUp.Engine.Output;
@@ -8,6 +9,7 @@ using DbUp.Engine.Preprocessors;
 using DbUp.Engine.Transactions;
 using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Query;
 
 namespace CrmUp
 {
@@ -137,20 +139,61 @@ namespace CrmUp
 
         protected virtual void ApplySolution(IConnectionManager connectionManager, CrmSolutionFile solution)
         {
+            Guid importId = Guid.NewGuid();
             var impSolReq = new ImportSolutionRequest()
             {
-                CustomizationFile = solution.FileBytes
+                CustomizationFile = solution.FileBytes,
+                ImportJobId = importId
             };
+
             var conn = _ConnectionManagerFactory();
             var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
             crmConnManager.ExecuteWithManagedConnection((a) =>
             {
+                var t = new Thread(new ParameterizedThreadStart(ProgressReport));
+                var args = new MonitorProgressArgs
+                    {
+                        ConnectionManager = crmConnManager,
+                        JobId = importId,
+                        UpgradeLog = _LogFactory()
+                    };
+                t.Start(importId);
                 var response = a().Execute(impSolReq);
                 if (connectionManager.IsScriptOutputLogged)
                 {
                     Log(response);
                 }
             });
+        }
+
+        public class MonitorProgressArgs
+        {
+            public CrmConnectionManager ConnectionManager { get; set; }
+            public Guid JobId { get; set; }
+            public IUpgradeLog UpgradeLog { get; set; }
+        }
+
+        private static void ProgressReport(object args)
+        {
+            // connect to crm again, don't reuse the connection that's used to import
+            var monitorArgs = (MonitorProgressArgs)args;
+            IOrganizationService sdk = null;
+            try
+            {
+                monitorArgs.ConnectionManager.ExecuteWithManagedConnection((a) =>
+               {
+                   var job = a().Retrieve("importjob", (Guid)monitorArgs.JobId, new ColumnSet("solutionname", "progress"));
+                   decimal progress = Convert.ToDecimal(job["progress"]);
+                   monitorArgs.UpgradeLog.WriteInformation("{0:N0}%", progress);
+                   if (progress == 100) { return; }
+               });
+            }
+            catch (Exception ex)
+            {
+                monitorArgs.UpgradeLog.WriteInformation("{0:N0}%", ex.Message);
+            }
+            Thread.Sleep(2000);
+            ProgressReport(monitorArgs);
         }
 
         protected virtual void ApplyCodeMigration(IConnectionManager connectionManager, CrmCodeMigrationScript migration)
