@@ -148,22 +148,24 @@ namespace CrmUp
 
             var conn = _ConnectionManagerFactory();
             var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
+            
             crmConnManager.ExecuteWithManagedConnection((a) =>
-            {
-                var t = new Thread(new ParameterizedThreadStart(ProgressReport));
-                var args = new MonitorProgressArgs
-                    {
-                        ConnectionManager = crmConnManager,
-                        JobId = importId,
-                        UpgradeLog = _LogFactory()
-                    };
-                t.Start(args);
-                var response = a().Execute(impSolReq);
-                if (connectionManager.IsScriptOutputLogged)
                 {
-                    Log(response);
-                }
-            });
+                    var args = new MonitorProgressArgs
+                     {
+                         ConnectionManager = crmConnManager,
+                         JobId = importId,
+                         UpgradeLog = _LogFactory()
+                     };
+                    using (var timer = new Timer(new TimerCallback(ProgressReport), args, new TimeSpan(0, 0, 30), new TimeSpan(0, 1, 0)))
+                    {
+                        var response = a().Execute(impSolReq);
+                        if (connectionManager.IsScriptOutputLogged)
+                        {
+                            Log(response);
+                        }
+                    }
+                });
         }
 
         public class MonitorProgressArgs
@@ -177,23 +179,20 @@ namespace CrmUp
         {
             // connect to crm again, don't reuse the connection that's used to import
             var monitorArgs = (MonitorProgressArgs)args;
-            IOrganizationService sdk = null;
             try
             {
                 monitorArgs.ConnectionManager.ExecuteWithManagedConnection((a) =>
-               {
-                   var job = a().Retrieve("importjob", (Guid)monitorArgs.JobId, new ColumnSet("solutionname", "progress"));
-                   decimal progress = Convert.ToDecimal(job["progress"]);
-                   monitorArgs.UpgradeLog.WriteInformation("{0:N0}%", progress);
-                   if (progress == 100) { return; }
-               });
+                {
+                    var job = a().Retrieve("importjob", (Guid)monitorArgs.JobId, new ColumnSet("solutionname", "progress"));
+                    decimal progress = Convert.ToDecimal(job["progress"]);
+                    monitorArgs.UpgradeLog.WriteInformation("{0:N0}%", progress);
+                    if (progress == 100) { return; }
+                });
             }
             catch (Exception ex)
             {
-                monitorArgs.UpgradeLog.WriteInformation("{0:N0}%", ex.Message);
+                monitorArgs.UpgradeLog.WriteError("Error checking progress of import: {0}", ex.Message);
             }
-            Thread.Sleep(2000);
-            ProgressReport(monitorArgs);
         }
 
         protected virtual void ApplyCodeMigration(IConnectionManager connectionManager, CrmCodeMigrationScript migration)

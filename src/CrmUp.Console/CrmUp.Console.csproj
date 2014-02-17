@@ -133,6 +133,7 @@
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
     </None>
+    <EmbeddedResource Include="TP2223_1_0_0_2_managed.zip" />
     <None Include="packages.config" />
     <EmbeddedResource Include="TP888888_1_0_0_1_managed.zip" />
     <EmbeddedResource Include="TP999999_1_0_0_0_managed.zip" />
