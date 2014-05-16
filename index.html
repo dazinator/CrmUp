@@ -180,11 +180,36 @@
             </p>
             <h2>Code based Migrations?</h2>
              <p>
-                You can write code based migrations to perform any kind of deployment activity that you could want. Your code will be executed and provided access to the Dynamics Crm Organisation service, Discovery Service, and Deployment Service. You can then perform your task such as 
-                 Importing some reference data from a CSV file, or Registering or Unregistering a component such as plugin or workflow..
+                You can write code based migrations to perform code based deployment activities that you need. This is similar in concept to EF "Code-First" Migrations. 
+                Your migrations are executed by CrmUp in alphabetical order by their "ScriptName". If the migration has already been successfully run against the CRM
+                in the environment then it will not be run a second time. Only the migrations that need to be run will be executed by CrmUp.
+                You can create a code based migration by simply inheriting from a particular abstract class like so:
                 <pre><code>
-                    sample code to come..     
+    public class ImportCurrencies : CrmCodeMigration
+    {
+
+        public override string ScriptName
+        {
+            get { return "0001" + this.GetType().Name; }
+        }
+
+        public override void Up(ICrmServiceProvider serviceProvider, IUpgradeLog log)
+        {
+            var service = serviceProvider.GetOrganisationService();
+            // Do any thing you like as part of this code based migration here..
+
+            // As long as you don't throw an exception, the migration will be record in the crm             // journal table as successfully run.
+
+        }
+
+       
+    }  
                </code></pre>
+               
+                 The ScriptName property allows you to give a name to your migration. Your migrations are run in alphabetical order so you will likely want to inplement a numbering strategy here.
+                 CrmUp will invoke each migration that needs to be run in alphabetical order, and will call the "Up()" method, passing in instances of the Crm Services - ready for you to perform your actons in Crm.
+                 Your migrations have easy access to the Dynamics Crm Organisation service, Discovery Service, and Deployment Service. You can use this mechanism to perform deployment tasks such as 
+                 registering a plugin, importing data, un-registering plugin or workflows, moving reference data from an obsolete field etc etc.
             </p>
             <h2>Resources</h2>
             <p>
