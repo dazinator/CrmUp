@@ -11,7 +11,7 @@
     <language>en-gb</language>
     <projectUrl>http://dazinator.github.io/CrmUp/</projectUrl>
     <copyright>Copyright © Darrell Tunnell 2014</copyright>
-    <releaseNotes>Previous versions of this NuGet package only installed correctly when your visual studio project was targeting .NET 4.5. Now .NET 4.0 and 4.5 compatible binaries are included in the NuGet package so as long as your project is targeting either one of those then it will install correctly. Other versions of .NET are not currently supported. Small breaking change for the code migrations, new abstract property intrduced in migration base class that must be implemented for script name.</releaseNotes>
+    <releaseNotes>Fixed solution file naming issue documented here: https://github.com/dazinator/CrmUp/issues/5 </releaseNotes>
     <tags>Dynamics Crm Continuous Deployment</tags>
     <dependencies>
       <dependency id="dbup" version="3.0.6" />

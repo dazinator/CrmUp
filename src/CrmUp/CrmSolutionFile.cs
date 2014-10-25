@@ -45,10 +45,11 @@ namespace CrmUp
             {
                 throw new Exception("Embedded solution files should be named ending '.zip'");
             }
-            var fileName = string.Format("{0}.{1}", scriptPathArray[segmentCount - 2], scriptPathArray[segmentCount - 1]);
+
+            var fileName = manifestResourceName; // string.Format("{0}.{1}", scriptPathArray[segmentCount - 2], scriptPathArray[segmentCount - 1]);
             var scriptName = System.IO.Path.GetFileNameWithoutExtension(fileName);
             using (var resource = assembly.GetManifestResourceStream(manifestResourceName))
-            {
+            {                
                 if (resource == null)
                 {
                     throw new ArgumentException("No embedded resource found with the name " + manifestResourceName + " inside assembly: " + assembly.FullName);
