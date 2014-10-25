@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using DbUp.Engine;
+using System.Resources;
+using System.Collections;
 
 namespace CrmUp
 {
@@ -44,12 +46,12 @@ namespace CrmUp
             if (segmentCount < 2)
             {
                 throw new Exception("Embedded solution files should be named ending '.zip'");
-            }
+            }           
 
-            var fileName = manifestResourceName; // string.Format("{0}.{1}", scriptPathArray[segmentCount - 2], scriptPathArray[segmentCount - 1]);
+            var fileName = string.Format("{0}.{1}", scriptPathArray[segmentCount - 2], scriptPathArray[segmentCount - 1]);
             var scriptName = System.IO.Path.GetFileNameWithoutExtension(fileName);
             using (var resource = assembly.GetManifestResourceStream(manifestResourceName))
-            {                
+            {             
                 if (resource == null)
                 {
                     throw new ArgumentException("No embedded resource found with the name " + manifestResourceName + " inside assembly: " + assembly.FullName);

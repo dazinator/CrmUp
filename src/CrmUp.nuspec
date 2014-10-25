@@ -11,7 +11,7 @@
     <language>en-gb</language>
     <projectUrl>http://dazinator.github.io/CrmUp/</projectUrl>
     <copyright>Copyright © Darrell Tunnell 2014</copyright>
-    <releaseNotes>Fixed solution file naming issue documented here: https://github.com/dazinator/CrmUp/issues/5 </releaseNotes>
+    <releaseNotes>**Breaking Change** Fixes a solution file naming issue documented here: https://github.com/dazinator/CrmUp/issues/5 Please only upgrade to this version for deployments to vanilla environemnts.</releaseNotes>
     <tags>Dynamics Crm Continuous Deployment</tags>
     <dependencies>
       <dependency id="dbup" version="3.0.6" />

@@ -26,7 +26,7 @@ namespace CrmUp.Tests
             // assert
             Assert.That(solutionFile != null);
             Assert.That(solutionFile.Contents, Is.Not.Empty);
-            Assert.That(solutionFile.Name, Is.EqualTo("CrmUp.Tests.TestScripts.TP888888_1_0_0_1_managed"));
+            Assert.That(solutionFile.Name, Is.EqualTo("TP888888_1_0_0_1_managed"));
         }
 
 
