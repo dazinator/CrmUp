@@ -141,7 +141,7 @@ namespace CrmUp
         protected virtual void ApplySolution(IConnectionManager connectionManager, CrmSolutionFile solution)
         {
             Guid importId = Guid.NewGuid();
-          
+
             var impSolReq = new ImportSolutionRequest()
             {
                 CustomizationFile = solution.FileBytes,
@@ -192,7 +192,7 @@ namespace CrmUp
                         monitorArgs.CrmServiceProvider.GetOrganisationService();
                     using (orgService as IDisposable)
                     {
-                        var job = orgService.Retrieve("importjob", (Guid) monitorArgs.JobId,
+                        var job = orgService.Retrieve("importjob", (Guid)monitorArgs.JobId,
                                                       new ColumnSet("solutionname", "progress"));
                         decimal progress = Convert.ToDecimal(job["progress"]);
                         monitorArgs.UpgradeLog.WriteInformation("{0:N0}%", progress);
@@ -211,8 +211,7 @@ namespace CrmUp
                 }
                 catch (Exception ex)
                 {
-                    monitorArgs.UpgradeLog.WriteError(
-                        "An error occurred when checking the progress of the solution import: {0}", ex.Message);
+                    monitorArgs.UpgradeLog.WriteWarning("Unable to determine the progress of the current solution import as Crm has not responded.. Will keep trying.");
                 }
                 finally
                 {
@@ -221,7 +220,7 @@ namespace CrmUp
             }
             else
             {
-                monitorArgs.UpgradeLog.WriteInformation("Still awaiting import progress update from Crm..");
+                monitorArgs.UpgradeLog.WriteInformation("Still awaiting solution import progress update from Crm..");
             }
         }
 
