@@ -138,6 +138,7 @@
     <Compile Include="Dynamics\ICrmOrganisationManager.cs" />
     <Compile Include="Dynamics\ICrmServiceProvider.cs" />
     <Compile Include="Dynamics\CrmConnectionProvider.cs" />
+    <Compile Include="Dynamics\SolutionImportException.cs" />
     <Compile Include="Fluent\DynamicsUpgradeEngineBuilder.cs" />
     <Compile Include="EmbeddedCrmSolutionAndCodeMigrationProvider.cs" />
     <Compile Include="CrmCodeMigrationScript.cs" />

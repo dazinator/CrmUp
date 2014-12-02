@@ -13,10 +13,11 @@ using DbUp.Support.SqlServer;
 using Microsoft.Xrm.Sdk;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Microsoft.Crm.Sdk.Messages;
 
 namespace CrmUp.Tests
 {
-    
+
     [Category("Script Executor")]
     [TestFixture]
     public class CrmSolutionScriptExecutorSpecificationOne : SpecificationFor<CrmSolutionScriptExecutor>
@@ -71,6 +72,15 @@ namespace CrmUp.Tests
             _fakeConnection.AssertWasCalled(o => o.Execute(Arg<OrganizationRequest>.Is.Anything), options => options.Repeat.Times(scriptCount));
         }
 
+        [Then]
+        public void Should_Publish_Workflows_When_Importing()
+        {
+            const int scriptCount = 1;
+            OrganizationRequest req = null;
+            Subject.Execute(scriptsToExecute.First());
+            _fakeConnection.AssertWasCalled(o => o.Execute(Arg<OrganizationRequest>.Matches(a => ((ImportSolutionRequest)a).PublishWorkflows == true)), options => options.Repeat.Times(scriptCount));
+        }
+
 
         //[Then]
         //public void Uses_Variable_Subtitute_Preprocessor_When_Applying_Solutions()
@@ -93,5 +103,5 @@ namespace CrmUp.Tests
         //    _fakeConnection.AssertWasCalled(o => o.Execute(Arg<OrganizationRequest>.Is.Anything), options => options.Repeat.Times(scriptCount));
         //}
     }
-    
+
 }

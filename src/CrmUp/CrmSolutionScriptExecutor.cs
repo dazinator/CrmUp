@@ -145,7 +145,8 @@ namespace CrmUp
             var impSolReq = new ImportSolutionRequest()
             {
                 CustomizationFile = solution.FileBytes,
-                ImportJobId = importId
+                ImportJobId = importId,
+                PublishWorkflows = true
             };
 
             var conn = _ConnectionManagerFactory();
@@ -162,10 +163,18 @@ namespace CrmUp
                     _LogFactory().WriteInformation("Import job id is: " + importId);
                     using (var timer = new Timer(new TimerCallback(ProgressReport), args, new TimeSpan(0, 0, 30), new TimeSpan(0, 1, 0)))
                     {
-                        var response = a().Execute(impSolReq);
-                        if (connectionManager.IsScriptOutputLogged)
+                        try
                         {
-                            Log(response);
+                            var response = a().Execute(impSolReq);
+                            if (connectionManager.IsScriptOutputLogged)
+                            {
+                                Log(response);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            var jobLog = GetJobLog(a, importId);
+                            throw new SolutionImportException(jobLog, e.Message, e);
                         }
                     }
                 });
@@ -229,6 +238,28 @@ namespace CrmUp
             var conn = _ConnectionManagerFactory();
             var crmConnManager = Guard.EnsureIs<CrmConnectionManager, IConnectionManager>(conn, "ConnectionManager");
             migration.Apply(crmConnManager.CrmServiceProvider, _LogFactory());
+        }
+
+        private string GetJobLog(Func<IOrganizationService> orgServiceFactory, Guid jobId)
+        {
+
+            try
+            {
+
+                var service = orgServiceFactory();
+                RetrieveFormattedImportJobResultsRequest importLogRequest = new RetrieveFormattedImportJobResultsRequest()
+                {
+                    ImportJobId = jobId
+                };
+                RetrieveFormattedImportJobResultsResponse importLogResponse = (RetrieveFormattedImportJobResultsResponse)service.Execute(importLogRequest);
+                return importLogResponse.FormattedResults;
+            }
+            catch (Exception e)
+            {
+                // Do nothing
+                return "Unable to get job log due to an error: " + e.Message;
+            }
+
         }
 
     }
