@@ -154,6 +154,8 @@ namespace CrmUp.Tests
             var third = scriptsToExecute[2];
             Assert.AreEqual(third.Name, deploymentStep3.GetScriptName());
 
+            manifest.Save("C://DeploymentManifest.xml");
+
         }
 
     }
