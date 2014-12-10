@@ -28,6 +28,26 @@ namespace CrmUp
         /// <param name="assembly"></param>
         /// <param name="manifestResourceName"></param>
         /// <returns></returns>
+        public static CrmSolutionFile FromFile(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentException("path");
+            }                   
+          
+            var scriptName = System.IO.Path.GetFileNameWithoutExtension(path);
+            using (var resourceStreamReader = new StreamReader(path, Encoding.Default, true))
+            {
+                return new CrmSolutionFile(scriptName, GetStreamBytes(resourceStreamReader.BaseStream));
+            }          
+        }
+
+        /// <summary>
+        /// Returns a new Crm Solution file from the given stream.
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <param name="manifestResourceName"></param>
+        /// <returns></returns>
         public static CrmSolutionFile FromEmbeddedResource(Assembly assembly, string manifestResourceName)
         {
             if (string.IsNullOrEmpty(manifestResourceName))

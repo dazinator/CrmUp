@@ -15,6 +15,7 @@ namespace CrmUp
         private readonly EmbeddedCrmSolutionScriptProvider embeddedScriptProvider;
         private readonly Assembly assembly;
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EmbeddedCrmSolutionAndCodeProvider"/> class.
         /// </summary>
@@ -28,11 +29,11 @@ namespace CrmUp
 
         private IEnumerable<SqlScript> ScriptsFromCodeMigrationClasses(IConnectionManager connectionManager)
         {
-            var script = typeof (CrmCodeMigration);
+            var script = typeof(CrmCodeMigration);
             var codeMigrations = assembly
                 .GetTypes()
                 .Where(type => script.IsAssignableFrom(type) && type.IsClass)
-                .Select(s => new CrmCodeMigrationScript((CrmCodeMigration) Activator.CreateInstance(s)))
+                .Select(s => new CrmCodeMigrationScript((CrmCodeMigration)Activator.CreateInstance(s)))
                 .ToList();
             return codeMigrations;
         }
@@ -50,4 +51,7 @@ namespace CrmUp
             return sqlScripts;
         }
     }
+
+
+   
 }

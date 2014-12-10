@@ -128,6 +128,8 @@
     </Compile>
     <Compile Include="CreateOrganisationArgs.cs" />
     <Compile Include="CrmCodeMigration.cs" />
+    <Compile Include="DeploymentManifest.cs" />
+    <Compile Include="DeploymentManifestScriptProvider.cs" />
     <Compile Include="Dynamics\AppSettingsConnectionStringProvider.cs" />
     <Compile Include="CrmConnectionManager.cs" />
     <Compile Include="Dynamics\CrmClientCredentialsProvider.cs" />
@@ -152,6 +154,7 @@
     <Compile Include="Dynamics\EntityMetadataBuilder.cs" />
     <Compile Include="Dynamics\EntityAttributeBuilder.cs" />
     <Compile Include="Dynamics\EntityUtils.cs" />
+    <Compile Include="FolderDirectoryCrmSolutionScriptProvider.cs" />
     <Compile Include="Util\Guard.cs" />
     <Compile Include="Dynamics\ICrmConnectionProvider.cs" />
     <Compile Include="ISupportOrgCreation.cs" />
