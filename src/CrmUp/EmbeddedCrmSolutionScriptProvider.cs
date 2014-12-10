@@ -5,6 +5,7 @@ using System.Reflection;
 using DbUp.Engine;
 using DbUp.Engine.Transactions;
 using DbUp.ScriptProviders;
+using System.IO;
 
 namespace CrmUp
 {
@@ -45,4 +46,6 @@ namespace CrmUp
         }
 
     }
+
+ 
 }

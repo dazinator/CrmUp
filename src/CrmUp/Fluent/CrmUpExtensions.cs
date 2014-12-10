@@ -114,6 +114,36 @@ namespace CrmUp
         {
             return builder.WithScripts(new EmbeddedCrmSolutionScriptProvider(assembly, filter)) as DynamicsUpgradeEngineBuilder;
         }
+
+        /// <summary>
+        /// Includes the solutions, and code migrations specified in the deployment manifest.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="manifest">The deployment manifest.</param>
+        /// <returns>
+        /// The same builder
+        /// </returns>
+        public static DynamicsUpgradeEngineBuilder WithDeploymentManifest(this DynamicsUpgradeEngineBuilder builder, DeploymentManifest manifest)
+        {
+            return WithDeploymentManifest(builder, manifest, null);
+        }
+
+        /// <summary>
+        /// Includes the solutions, and code migrations specified in the deployment manifest.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="manifest">The deployment manifest.</param>
+        /// <param name="filter"></param>
+        /// <returns>
+        /// The same builder
+        /// </returns>
+        public static DynamicsUpgradeEngineBuilder WithDeploymentManifest(this DynamicsUpgradeEngineBuilder builder, DeploymentManifest manifest, Func<string, bool> filter)
+        {
+            return builder.WithScripts(new DeploymentManifestScriptProvider(manifest, filter)) as DynamicsUpgradeEngineBuilder;
+        }
+
+
+
         #endregion
 
         #region Create Organisation If Doesn't Exist
