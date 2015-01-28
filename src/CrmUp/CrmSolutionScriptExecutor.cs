@@ -108,20 +108,17 @@ namespace CrmUp
             catch (Exception ex)
             {
                 _LogFactory().WriteInformation("Exception has occured in script: '{0}'", script.Name);
-                _LogFactory().WriteError(ex.ToString());
+                _LogFactory().WriteError("Exception Message: {0}", ex.ToString());
                 throw;
             }
         }
 
         private void Log(OrganizationResponse response)
         {
-            _LogFactory().WriteInformation("Response from Crm: ");
-            _LogFactory().WriteInformation(response.ResponseName);
-            _LogFactory().WriteInformation("Response Params: ");
+            _LogFactory().WriteInformation("Response from Crm name: {0} ", response.ResponseName);
             foreach (var item in response.Results)
             {
-                _LogFactory().WriteInformation("{0} - {1}", item.Key, item.Value);
-
+                _LogFactory().WriteInformation("Response Key / Value: {0} - {1}", item.Key, item.Value);
             }
         }
 
@@ -160,7 +157,7 @@ namespace CrmUp
                          JobId = importId,
                          UpgradeLog = _LogFactory()
                      };
-                    _LogFactory().WriteInformation("Import job id is: " + importId);
+                    _LogFactory().WriteInformation("Import job id is: {0}", importId);
                     using (var timer = new Timer(new TimerCallback(ProgressReport), args, new TimeSpan(0, 0, 30), new TimeSpan(0, 1, 0)))
                     {
                         try

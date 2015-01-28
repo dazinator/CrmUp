@@ -11,7 +11,7 @@
     <language>en-gb</language>
     <projectUrl>http://dazinator.github.io/CrmUp/</projectUrl>
     <copyright>Copyright © Darrell Tunnell 2014</copyright>
-    <releaseNotes>Added a new feature, you can now use a deployment manifest to control what is deployed, documented here: https://github.com/dazinator/CrmUp/wiki/Deployment-using-a-Deployment-Manifest </releaseNotes>
+    <releaseNotes>Minor fix for logging method.</releaseNotes>
     <tags>Dynamics Crm Continuous Deployment</tags>
     <dependencies>
       <dependency id="dbup" version="3.0.6" />
