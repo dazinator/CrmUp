@@ -25,13 +25,22 @@ namespace CrmUp
         private Func<IUpgradeLog> _LogFactory = null;
         private Func<bool> _VariablesEnabled = null;
         private IEnumerable<IScriptPreprocessor> _ScriptPreProcessors = null;
+        private bool _EnableWriteOfJobLogToLocalFile;
+        private bool _PublishWorkflows;
 
-        public CrmSolutionScriptExecutor(Func<IConnectionManager> connectionManagerFactory, Func<IUpgradeLog> logFactory, Func<bool> variablesEnabled, IEnumerable<IScriptPreprocessor> scriptPreprocessors)
+
+        public CrmSolutionScriptExecutor(Func<IConnectionManager> connectionManagerFactory, 
+                                         Func<IUpgradeLog> logFactory, 
+                                         Func<bool> variablesEnabled, 
+                                         IEnumerable<IScriptPreprocessor> scriptPreprocessors, 
+                                         bool publishWorkflows = true, bool enableWriteJobLogToFile = true)
         {
             _ConnectionManagerFactory = connectionManagerFactory;
             _LogFactory = logFactory;
             _VariablesEnabled = variablesEnabled;
             _ScriptPreProcessors = scriptPreprocessors;
+            _PublishWorkflows = publishWorkflows;
+            _EnableWriteOfJobLogToLocalFile = enableWriteJobLogToFile;
         }
 
         /// <summary>
@@ -122,6 +131,14 @@ namespace CrmUp
             }
         }
 
+        private string WriteJobLogToFile(Guid jobId, string jobLog)
+        {
+            string fileName = jobId.ToString("N") + ".xls";
+            string outputFileName = System.IO.Path.Combine(System.IO.Path.GetTempPath(), fileName);
+            System.IO.File.WriteAllText(outputFileName, jobLog);
+            return outputFileName;
+        }
+
         /// <summary>
         /// Having to implement this due to DbUp interfac, but nothing to do.
         /// </summary>
@@ -143,7 +160,7 @@ namespace CrmUp
             {
                 CustomizationFile = solution.FileBytes,
                 ImportJobId = importId,
-                PublishWorkflows = true
+                PublishWorkflows = _PublishWorkflows
             };
 
             var conn = _ConnectionManagerFactory();
@@ -170,7 +187,14 @@ namespace CrmUp
                         }
                         catch (Exception e)
                         {
+                            // write the job log to a file?
                             var jobLog = GetJobLog(a, importId);
+                            if (_EnableWriteOfJobLogToLocalFile)
+                            {                             
+                               var outputFile = WriteJobLogToFile(importId, jobLog);
+                               _LogFactory().WriteInformation("The import job log has been written to: {0} ", outputFile);
+                            }
+                           
                             throw new SolutionImportException(jobLog, e.Message, e);
                         }
                     }
@@ -242,7 +266,6 @@ namespace CrmUp
 
             try
             {
-
                 var service = orgServiceFactory();
                 RetrieveFormattedImportJobResultsRequest importLogRequest = new RetrieveFormattedImportJobResultsRequest()
                 {

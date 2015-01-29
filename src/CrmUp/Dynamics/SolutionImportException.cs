@@ -21,6 +21,7 @@ namespace CrmUp.Dynamics
         {
             JobLog = joblog;
         }
+
         public override string Message
         {
             get
@@ -31,11 +32,18 @@ namespace CrmUp.Dynamics
                 {
                     builder.Append(base.Message);
                 }
-                builder.AppendLine("CRM Job Log: ");
-                if (!string.IsNullOrEmpty(JobLog))
+
+                if(this.InnerException != null)
                 {
-                    builder.Append(JobLog);                 
-                }               
+                    builder.AppendLine("CRM Exception: ");
+                    builder.AppendLine(this.InnerException.ToString());
+                }
+                //builder.AppendLine("CRM Job Log: ");
+                //builder.AppendLine("CRM Job Log: ");
+                //if (!string.IsNullOrEmpty(JobLog))
+                //{
+                //    builder.Append(JobLog);                 
+                //}               
                 return builder.ToString();
             }
         }

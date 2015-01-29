@@ -23,13 +23,13 @@ namespace CrmUp
 
         #region To DynamicsCrmOrganisation
 
-        public static DynamicsUpgradeEngineBuilder DynamicsCrmOrganisation(this SupportedDatabases supported, string organisationConnectionString = "")
+        public static DynamicsUpgradeEngineBuilder DynamicsCrmOrganisation(this SupportedDatabases supported, string organisationConnectionString = "", bool publishWorkflows = true, bool enableWriteJobLogsToFile = true)
         {
             var crmConnectionProvider = new ExplicitConnectionStringProviderWithFallbackToConfig();
             crmConnectionProvider.OrganisationServiceConnectionString = organisationConnectionString;
             var credentialsProvider = new CrmClientCredentialsProvider();
             var crmServiceProvider = new CrmServiceProvider(crmConnectionProvider, credentialsProvider);
-            return DynamicsCrmOrganisation(supported, crmServiceProvider);
+            return DynamicsCrmOrganisation(supported, crmServiceProvider, publishWorkflows, enableWriteJobLogsToFile);
         }
 
         public static DynamicsUpgradeEngineBuilder DynamicsCrmOrganisation(this SupportedDatabases supported, ICrmClientCredentialsProvider clientCredentialsProvider)
@@ -49,10 +49,10 @@ namespace CrmUp
             var crmServiceProvider = new CrmServiceProvider(connectionProvider, clientCredentialsProvider);
             return DynamicsCrmOrganisation(supported, crmServiceProvider);
         }
-
-        public static DynamicsUpgradeEngineBuilder DynamicsCrmOrganisation(this SupportedDatabases supported, ICrmServiceProvider crmServiceProvider)
+              
+        public static DynamicsUpgradeEngineBuilder DynamicsCrmOrganisation(this SupportedDatabases supported, ICrmServiceProvider crmServiceProvider, bool publishWorkflows = true, bool enableWriteJobLogsToFile = true)
         {
-            return DynamicsCrmUpgradeEngineBuilder(new CrmConnectionManager(crmServiceProvider), new CrmOrganisationManager(crmServiceProvider));
+            return DynamicsCrmUpgradeEngineBuilder(new CrmConnectionManager(crmServiceProvider), new CrmOrganisationManager(crmServiceProvider), publishWorkflows, enableWriteJobLogsToFile);
         }
 
         #endregion
@@ -170,11 +170,11 @@ namespace CrmUp
 
         #endregion
 
-        private static DynamicsUpgradeEngineBuilder DynamicsCrmUpgradeEngineBuilder(IConnectionManager connectionManager, CrmOrganisationManager crmOrgManager)
+        private static DynamicsUpgradeEngineBuilder DynamicsCrmUpgradeEngineBuilder(IConnectionManager connectionManager, CrmOrganisationManager crmOrgManager, bool publishWorkflows = true, bool writeJobLogToFile = true)
         {
             var builder = new DynamicsUpgradeEngineBuilder();
             builder.Configure(c => c.ConnectionManager = connectionManager);
-            builder.Configure(c => c.ScriptExecutor = new CrmSolutionScriptExecutor(() => c.ConnectionManager, () => c.Log, () => c.VariablesEnabled, c.ScriptPreprocessors));
+            builder.Configure(c => c.ScriptExecutor = new CrmSolutionScriptExecutor(() => c.ConnectionManager, () => c.Log, () => c.VariablesEnabled, c.ScriptPreprocessors, publishWorkflows, writeJobLogToFile));
             builder.Configure(c => c.Journal = new CrmEntityJournal(() => c.ConnectionManager, () => c.Log, crmOrgManager));
             return builder;
         }
