@@ -11,6 +11,7 @@ using DbUp.Engine.Transactions;
 using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
+using System.ServiceModel;
 
 namespace CrmUp
 {
@@ -29,10 +30,10 @@ namespace CrmUp
         private bool _PublishWorkflows;
 
 
-        public CrmSolutionScriptExecutor(Func<IConnectionManager> connectionManagerFactory, 
-                                         Func<IUpgradeLog> logFactory, 
-                                         Func<bool> variablesEnabled, 
-                                         IEnumerable<IScriptPreprocessor> scriptPreprocessors, 
+        public CrmSolutionScriptExecutor(Func<IConnectionManager> connectionManagerFactory,
+                                         Func<IUpgradeLog> logFactory,
+                                         Func<bool> variablesEnabled,
+                                         IEnumerable<IScriptPreprocessor> scriptPreprocessors,
                                          bool publishWorkflows = true, bool enableWriteJobLogToFile = true)
         {
             _ConnectionManagerFactory = connectionManagerFactory;
@@ -185,18 +186,25 @@ namespace CrmUp
                                 Log(response);
                             }
                         }
-                        catch (Exception e)
+                        catch (System.Exception ex)
                         {
+                            _LogFactory().WriteInformation("The CRM solution import request terminated with an error.");
+
+                            //   Console.WriteLine(ex.Message);
+
                             // write the job log to a file?
-                            var jobLog = GetJobLog(a, importId);
+                            string jobLog = string.Empty;
                             if (_EnableWriteOfJobLogToLocalFile)
-                            {                             
-                               var outputFile = WriteJobLogToFile(importId, jobLog);
-                               _LogFactory().WriteInformation("The import job log has been written to: {0} ", outputFile);
+                            {
+                                jobLog = GetJobLog(a, importId);
+                                var outputFile = WriteJobLogToFile(importId, jobLog);
+                                _LogFactory().WriteInformation("The import job log has been written to: {0} ", outputFile);
                             }
-                           
-                            throw new SolutionImportException(jobLog, e.Message, e);
+
+                            throw new SolutionImportException(ex.Message, ex);
+
                         }
+
                     }
                 });
         }
